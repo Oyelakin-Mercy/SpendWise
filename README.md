@@ -1,1 +1,1 @@
-# FinWise_AI
+# SpendWise
