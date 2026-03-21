@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpendWise Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f5f4f0;
+        --surface: #ffffff;
+        --surface-2: #f0efe9;
+        --border: #e4e3dc;
+
+        --ink: #18181a;
+        --ink-2: #5c5b63;
+        --ink-3: #9b9aa5;
+
+        --brand: #1a1a6e;
+        --brand-light: #eeeeff;
+
+        --green: #1b6b24;
+        --green-bg: #e8f5e9;
+
+        --red: #b91c1c;
+        --red-bg: #fef2f2;
+
+        --gold: #c8a84b;
+
+        --radius-sm: 8px;
+        --radius-md: 14px;
+        --radius-lg: 20px;
+        --radius-full: 999px;
+
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.07);
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ── Sidebar ────────────────────────────────────── */
+
+      .sidebar {
+        width: 232px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 28px 16px;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 8px;
+        margin-bottom: 32px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--brand);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 18px;
+      }
+
+      .logo-text {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--brand);
+        letter-spacing: -0.3px;
+      }
+
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      nav a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink-2);
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+
+      nav a .material-symbols-rounded {
+        font-size: 20px;
+      }
+
+      nav a:hover {
+        background: var(--surface-2);
+        color: var(--ink);
+      }
+
+      nav a.active {
+        background: var(--brand-light);
+        color: var(--brand);
+        font-weight: 600;
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding: 14px;
+        background: var(--surface-2);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 38px;
+        height: 38px;
+        background: var(--brand);
+        color: #fff;
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+
+      .sidebar-footer-info p:first-child {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .sidebar-footer-info p:last-child {
+        font-size: 12px;
+        color: var(--ink-3);
+      }
+
+      /* ── Main ───────────────────────────────────────── */
+
+      main {
+        flex: 1;
+        padding: 40px 40px 60px;
+        max-width: 960px;
+      }
+
+      .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 36px;
+      }
+
+      .page-header h2 {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+      }
+
+      .page-header p {
+        font-size: 14px;
+        color: var(--ink-3);
+        margin-top: 2px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.15s;
+      }
+
+      .btn:hover {
+        opacity: 0.85;
+      }
+
+      .btn-primary {
+        background: var(--brand);
+        color: #fff;
+      }
+
+      .btn-ghost {
+        background: var(--surface);
+        color: var(--ink-2);
+        border: 1px solid var(--border);
+      }
+
+      .btn .material-symbols-rounded {
+        font-size: 16px;
+      }
+
+      /* ── Balance strip ──────────────────────────────── */
+
+      .balance-strip {
+        background: var(--brand);
+        color: #fff;
+        border-radius: var(--radius-lg);
+        padding: 28px 32px;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .balance-main label {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.65;
+      }
+
+      .balance-main .amount {
+        font-size: 42px;
+        font-weight: 700;
+        letter-spacing: -1.5px;
+        font-family: "Inter", sans-serif;
+        line-height: 1.1;
+        margin-top: 6px;
+      }
+
+      .balance-stat {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-md);
+        padding: 16px 20px;
+        min-width: 140px;
+      }
+
+      .balance-stat label {
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        opacity: 0.6;
+        font-weight: 500;
+      }
+
+      .balance-stat .value {
+        font-size: 22px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        letter-spacing: -0.5px;
+        margin-top: 4px;
+      }
+
+      .balance-stat .change {
+        font-size: 12px;
+        opacity: 0.65;
+        margin-top: 2px;
+      }
+
+      .change-up {
+        color: #86efac;
+      }
+      .change-down {
+        color: #fca5a5;
+      }
+
+      /* ── Grid ───────────────────────────────────────── */
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 5fr 4fr;
+        gap: 20px;
+      }
+
+      /* ── Cards ──────────────────────────────────────── */
+
+      .card {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .card-title {
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: -0.2px;
+      }
+
+      .card-action {
+        font-size: 13px;
+        color: var(--brand);
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+
+      /* ── Spending donut ─────────────────────────────── */
+
+      .donut-layout {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .donut-wrap {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        flex-shrink: 0;
+      }
+
+      .donut-wrap svg {
+        transform: rotate(-90deg);
+      }
+
+      .donut-label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+      }
+
+      .donut-label span {
+        font-size: 10px;
+        font-weight: 500;
+        color: var(--ink-3);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        line-height: 1;
+      }
+
+      .legend {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .legend-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .legend-item p {
+        font-size: 13px;
+        color: var(--ink-2);
+      }
+
+      .legend-item strong {
+        font-size: 13px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* ── AI Insight card ────────────────────────────── */
+
+      .insight-card {
+        background: var(--brand);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        border: none;
+      }
+
+      .insight-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .insight-badge {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 3px 8px;
+        border-radius: var(--radius-full);
+      }
+
+      .insight-card blockquote {
+        font-size: 14px;
+        line-height: 1.6;
+        opacity: 0.9;
+        flex: 1;
+        font-style: italic;
+        font-weight: 300;
+      }
+
+      .insight-card blockquote strong {
+        color: #fde68a;
+        font-style: normal;
+        font-weight: 600;
+      }
+
+      .budget-health {
+        margin-top: 20px;
+      }
+
+      .budget-health-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        opacity: 0.7;
+        margin-bottom: 6px;
+      }
+
+      .progress-track {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: var(--radius-full);
+        height: 5px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        border-radius: var(--radius-full);
+        background: #86efac;
+      }
+
+      /* ── Savings goals ──────────────────────────────── */
+
+      .goals-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .goal-item {
+      }
+
+      .goal-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 7px;
+      }
+
+      .goal-row p {
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .goal-row span {
+        font-size: 12px;
+        color: var(--ink-3);
+        font-family: "Inter", sans-serif;
+      }
+
+      .goal-track {
+        background: var(--surface-2);
+        border-radius: var(--radius-full);
+        height: 5px;
+        overflow: hidden;
+      }
+
+      .goal-fill {
+        height: 100%;
+        border-radius: var(--radius-full);
+        background: var(--green);
+      }
+
+      /* ── Transactions ───────────────────────────────── */
+
+      .tx-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .tx {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        background: var(--surface-2);
+        border-radius: var(--radius-md);
+        gap: 12px;
+      }
+
+      .tx-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .tx-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .tx-icon.expense {
+        background: var(--red-bg);
+        color: var(--red);
+      }
+      .tx-icon.income {
+        background: var(--green-bg);
+        color: var(--green);
+      }
+
+      .tx-info p {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .tx-info small {
+        font-size: 11px;
+        color: var(--ink-3);
+      }
+
+      .tx-amount {
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        white-space: nowrap;
+      }
+
+      .tx-amount.debit {
+        color: var(--red);
+      }
+      .tx-amount.credit {
+        color: var(--green);
+      }
+
+      /* ── Mobile nav & FAB ───────────────────────────── */
+
+      .mobile-header {
+        display: none;
+      }
+      .mobile-nav {
+        display: none;
+      }
+      .fab {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        main {
+          padding: 20px 16px 100px;
+        }
+
+        .mobile-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 24px;
+        }
+
+        .mobile-logo {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+        }
+
+        .mobile-logo .logo-text {
+          font-size: 16px;
+          color: var(--brand);
+          font-weight: 700;
+        }
+
+        .mobile-nav {
+          display: flex;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: var(--surface);
+          border-top: 1px solid var(--border);
+          padding: 10px 8px 22px;
+          justify-content: space-around;
+          z-index: 100;
+        }
+
+        .mobile-nav a {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 3px;
+          text-decoration: none;
+          font-size: 10px;
+          font-weight: 500;
+          color: var(--ink-3);
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          padding: 4px 10px;
+          border-radius: var(--radius-sm);
+          transition: color 0.15s;
+        }
+
+        .mobile-nav a.active {
+          color: var(--brand);
+        }
+        .mobile-nav a .material-symbols-rounded {
+          font-size: 22px;
+        }
+
+        .balance-strip {
+          grid-template-columns: 1fr;
+          padding: 22px 20px;
+          gap: 16px;
+        }
+
+        .balance-main .amount {
+          font-size: 32px;
+        }
+
+        .balance-stat {
+          min-width: unset;
+        }
+
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .fab {
+          display: flex;
+          position: fixed;
+          bottom: 80px;
+          right: 20px;
+          width: 52px;
+          height: 52px;
+          background: var(--brand);
+          color: #fff;
+          border-radius: var(--radius-full);
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 20px rgba(26, 26, 110, 0.35);
+          z-index: 99;
+          border: none;
+          cursor: pointer;
+          transition: transform 0.15s;
+        }
+
+        .fab:active {
+          transform: scale(0.94);
+        }
+      }
+
+      .material-symbols-rounded {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <span class="material-symbols-rounded">account_balance_wallet</span>
+          </div>
+          <span class="logo-text">SpendWise</span>
+        </a>
+
+        <nav>
+          <a href="#" class="active">
+            <span class="material-symbols-rounded">grid_view</span>
+            Dashboard
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">receipt_long</span>
+            History
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">account_balance</span>
+            Budget
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">trending_up</span>
+            Savings
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">psychology</span>
+            AI Insight
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="avatar">AK</div>
+          <div class="sidebar-footer-info">
+            <p>Adebayo K.</p>
+            <p>Premium Plan</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main>
+        <!-- Mobile only header -->
+        <header class="mobile-header">
+          <a href="#" class="mobile-logo">
+            <div class="logo-icon">
+              <span class="material-symbols-rounded"
+                >account_balance_wallet</span
+              >
+            </div>
+            <span class="logo-text">SpendWise</span>
+          </a>
+          <button class="btn btn-ghost" style="padding: 8px">
+            <span class="material-symbols-rounded">notifications</span>
+          </button>
+        </header>
+
+        <div class="page-header">
+          <div>
+            <h2>Good morning, Adebayo 👋</h2>
+            <p>Here's your financial overview for March 2025.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-ghost">
+              <span class="material-symbols-rounded">tune</span>
+              Filter
+            </button>
+            <button class="btn btn-primary">
+              <span class="material-symbols-rounded">add</span>
+              Add Transaction
+            </button>
+          </div>
+        </div>
+
+        <!-- Balance strip -->
+        <div class="balance-strip">
+          <div class="balance-main">
+            <label>Total Balance</label>
+            <div class="amount">₦142,500</div>
+          </div>
+
+          <div class="balance-stat">
+            <label>Income</label>
+            <div class="value">₦210,000</div>
+            <div class="change change-up">↑ 12% vs last month</div>
+          </div>
+
+          <div class="balance-stat">
+            <label>Expenses</label>
+            <div class="value">₦67,500</div>
+            <div class="change change-down">42% of budget used</div>
+          </div>
+        </div>
+
+        <!-- Spending analysis + AI Insight -->
+        <div class="grid-2" style="margin-bottom: 20px">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Spending Breakdown</h3>
+              <button class="card-action">Details</button>
+            </div>
+
+            <div class="donut-layout">
+              <div class="donut-wrap">
+                <svg viewBox="0 0 120 120" width="120" height="120">
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="48"
+                    fill="none"
+                    stroke="#eeeeee"
+                    stroke-width="14"
+                  />
+                  <!-- Housing: 52% -->
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="48"
+                    fill="none"
+                    stroke="#1a1a6e"
+                    stroke-width="14"
+                    stroke-dasharray="301.6"
+                    stroke-dashoffset="144.8"
+                  />
+                  <!-- Groceries: 27% -->
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="48"
+                    fill="none"
+                    stroke="#1b6b24"
+                    stroke-width="14"
+                    stroke-dasharray="301.6"
+                    stroke-dashoffset="220.2"
+                    stroke-linecap="butt"
+                  />
+                  <!-- Transport: 12% -->
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="48"
+                    fill="none"
+                    stroke="#c8a84b"
+                    stroke-width="14"
+                    stroke-dasharray="301.6"
+                    stroke-dashoffset="265.4"
+                    stroke-linecap="butt"
+                  />
+                </svg>
+                <div class="donut-label">74%<br /><span>Essential</span></div>
+              </div>
+
+              <div class="legend">
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <div
+                      class="legend-dot"
+                      style="background: var(--brand)"
+                    ></div>
+                    <p>Housing & Bills</p>
+                  </div>
+                  <strong>₦35,000</strong>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <div
+                      class="legend-dot"
+                      style="background: var(--green)"
+                    ></div>
+                    <p>Groceries</p>
+                  </div>
+                  <strong>₦18,200</strong>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <div
+                      class="legend-dot"
+                      style="background: var(--gold)"
+                    ></div>
+                    <p>Transport</p>
+                  </div>
+                  <strong>₦8,300</strong>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <div
+                      class="legend-dot"
+                      style="background: var(--border)"
+                    ></div>
+                    <p>Other</p>
+                  </div>
+                  <strong>₦6,000</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-card">
+            <div class="insight-header">
+              <span
+                class="material-symbols-rounded"
+                style="font-size: 18px; opacity: 0.8"
+                >psychology</span
+              >
+              <span class="insight-badge">AI Insight</span>
+            </div>
+
+            <blockquote>
+              You're on track to save <strong>₦15,000 more</strong> than last
+              month. Consider moving your surplus to your Education Fund —
+              you're only 55% away from the target.
+            </blockquote>
+
+            <div class="budget-health">
+              <div class="budget-health-row">
+                <span>Budget Health</span>
+                <span>Excellent</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 85%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Savings + Transactions -->
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Savings Goals</h3>
+              <button class="card-action">View all</button>
+            </div>
+
+            <div class="goals-list">
+              <div class="goal-item">
+                <div class="goal-row">
+                  <p>Education Fund</p>
+                  <span>₦45k / ₦100k</span>
+                </div>
+                <div class="goal-track">
+                  <div class="goal-fill" style="width: 45%"></div>
+                </div>
+              </div>
+
+              <div class="goal-item">
+                <div class="goal-row">
+                  <p>New Business Tool</p>
+                  <span>₦12.5k / ₦20k</span>
+                </div>
+                <div class="goal-track">
+                  <div class="goal-fill" style="width: 62.5%"></div>
+                </div>
+              </div>
+
+              <div class="goal-item">
+                <div class="goal-row">
+                  <p>Emergency Fund</p>
+                  <span>₦85k / ₦250k</span>
+                </div>
+                <div class="goal-track">
+                  <div class="goal-fill" style="width: 34%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent Transactions</h3>
+              <button class="card-action">See all</button>
+            </div>
+
+            <div class="tx-list">
+              <div class="tx">
+                <div class="tx-left">
+                  <div class="tx-icon expense">
+                    <span class="material-symbols-rounded">shopping_cart</span>
+                  </div>
+                  <div class="tx-info">
+                    <p>Oando Supermarket</p>
+                    <small>Grocery · 2 hours ago</small>
+                  </div>
+                </div>
+                <span class="tx-amount debit">−₦4,200</span>
+              </div>
+
+              <div class="tx">
+                <div class="tx-left">
+                  <div class="tx-icon income">
+                    <span class="material-symbols-rounded">payments</span>
+                  </div>
+                  <div class="tx-info">
+                    <p>Salary Credit</p>
+                    <small>Work · Yesterday</small>
+                  </div>
+                </div>
+                <span class="tx-amount credit">+₦105,000</span>
+              </div>
+
+              <div class="tx">
+                <div class="tx-left">
+                  <div class="tx-icon expense">
+                    <span class="material-symbols-rounded">directions_car</span>
+                  </div>
+                  <div class="tx-info">
+                    <p>Bolt Ride</p>
+                    <small>Transport · 2 days ago</small>
+                  </div>
+                </div>
+                <span class="tx-amount debit">−₦2,100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Mobile bottom nav -->
+    <nav class="mobile-nav">
+      <a href="#" class="active">
+        <span class="material-symbols-rounded">grid_view</span>
+        Dashboard
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">receipt_long</span>
+        History
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">account_balance</span>
+        Budget
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">trending_up</span>
+        Savings
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">psychology</span>
+        AI
+      </a>
+    </nav>
+
+    <button class="fab" aria-label="Add transaction">
+      <span class="material-symbols-rounded">add</span>
+    </button>
+  </body>
+</html>
