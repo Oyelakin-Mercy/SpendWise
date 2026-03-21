@@ -1,0 +1,362 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget Planner - SpendWise AI</title>
+    <style>
+        :root {
+            --bg: #f3f7fb;
+            --panel: #fff;
+            --text: #2b2b3a;
+            --muted: #6f7583;
+            --primary: #2563eb;
+            --green: #16a34a;
+            --red: #dc2626;
+            --border: #e5e7eb;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .app {
+            display: grid;
+            grid-template-columns: 230px 1fr;
+            min-height: 100vh;
+        }
+        .sidebar {
+            background: #ffffff;
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav-item:hover, .nav-item.active { background: #eff6ff; color: var(--primary); }
+        .header {
+            padding: 20px 24px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header h1 { margin: 0; font-size: 1.1rem; color: #374151; }
+        .top-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 12px 0 8px;
+        }
+        .main {
+            padding: 26px;
+            background: var(--bg);
+            min-height: calc(100vh - 66px);
+        }
+        .summary-card {
+            display: grid;
+            gap: 12px;
+            padding: 18px;
+            border-radius: 14px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            width: min(100%, 640px);
+            margin-bottom: 20px;
+        }
+        .summary-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .summary-head span { color: var(--muted); font-weight: 600; }
+        .summary-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .summary-pill {
+            flex: 1 1 180px;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+        .summary-pill strong { display: block; font-size: 1.4rem; margin-bottom: 3px; }
+        .green { color: var(--green); }
+        .red { color: var(--red); }
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 73%;
+            background: linear-gradient(90deg, #4f46e5, #2563eb);
+        }
+        .section {
+            margin-top: 16px;
+            display: grid;
+            gap: 14px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-header h2 { margin: 0; font-size: 1.25rem; }
+        .btn {
+            border: 1px solid var(--primary);
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .card {
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 14px;
+        }
+        .card h3 { margin: 0 0 4px 0; font-size: 1rem; }
+        .card p { margin: 0; color: var(--muted); font-weight: 600; }
+        .status {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .status.green { color: var(--green); }
+        .status.red { color: var(--red); }
+        .status.blue { color: #2563eb; }
+        .status-text {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .status-text.green { color: var(--green); }
+        .status-text.red { color: var(--red); }
+        .spent-budget {
+            margin: 0;
+            color: var(--muted);
+            font-weight: 600;
+        }
+        .progress-fill.red {
+            background: var(--red);
+        }
+        .progress-fill.green {
+            background: var(--green);
+        }
+        .card-inputs {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .card-inputs label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-inputs input {
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            width: 80px;
+        }
+        .profile {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #c7d2fe;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #434190;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="logo">SpendWise AI</div>
+            <a class="nav-item" href="dashboard.html">Dashboard</a>
+            <a class="nav-item" href="history.html">History</a>
+            <a class="nav-item active" href="budget.html">Budget</a>
+            <a class="nav-item" href="savings.html">Savings</a>
+            <a class="nav-item" href="ai-insights.html">AI Assistant</a>
+            <div class="profile"><div class="avatar">F</div> Faith</div>
+        </aside>
+        <div>
+            <header class="header">
+                <div>
+                    <div>Monthly Overview</div>
+                    <div class="top-title">Budget</div>
+                </div>
+                <div>March 2026</div>
+            </header>
+            <main class="main">
+                <section class="summary-card">
+                    <div class="summary-head">
+                        <strong>Total</strong>
+                        <span>Saved so far</span>
+                    </div>
+                    <div class="summary-values">
+                        <div class="summary-pill">
+                            <strong>$4,250</strong>
+                            Total Budget
+                        </div>
+                        <div class="summary-pill">
+                            <strong>$3,129.55</strong>
+                            Spent
+                        </div>
+                        <div class="summary-pill green">
+                            <strong>$1,120.45</strong>
+                            Remaining
+                        </div>
+                    </div>
+                    <div>
+                        <div class="status blue">Progress: 73%</div>
+                        <div class="progress-track"><div class="progress-fill"></div></div>
+                    </div>
+                </section>
+                <section class="section">
+                    <div class="section-header">
+                        <h2>Category Breakdown</h2>
+                        <button class="btn">+ Create New Budget</button>
+                    </div>
+                    <div class="cards">
+                        <article class="card" id="dining-card">
+                            <h3>Dining & Food</h3>
+                            <p class="status-text red">Overspent</p>
+                            <p class="spent-budget">Spent $1,420 / Budget $1,300</p>
+                            <div class="progress-track"><div class="progress-fill red" style="width: 100%;"></div></div>
+                            <div class="card-inputs">
+                                <label>Spent: $<input type="number" step="0.01" id="spent-dining" value="1420"></label>
+                                <label>Budget: $<input type="number" step="0.01" id="budget-dining" value="1300"></label>
+                            </div>
+                        </article>
+                        <article class="card" id="rent-card">
+                            <h3>Rent & Utilities</h3>
+                            <p class="status-text green">On track</p>
+                            <p class="spent-budget">Spent $1,650 / Budget $2,000</p>
+                            <div class="progress-track"><div class="progress-fill green" style="width: 82.5%;"></div></div>
+                            <div class="card-inputs">
+                                <label>Spent: $<input type="number" step="0.01" id="spent-rent" value="1650"></label>
+                                <label>Budget: $<input type="number" step="0.01" id="budget-rent" value="2000"></label>
+                            </div>
+                        </article>
+                        <article class="card" id="transportation-card">
+                            <h3>Transportation</h3>
+                            <p class="status-text green">Available</p>
+                            <p class="spent-budget">Spent $600 / Budget $950</p>
+                            <div class="progress-track"><div class="progress-fill green" style="width: 63.16%;"></div></div>
+                            <div class="card-inputs">
+                                <label>Spent: $<input type="number" step="0.01" id="spent-transportation" value="600"></label>
+                                <label>Budget: $<input type="number" step="0.01" id="budget-transportation" value="950"></label>
+                            </div>
+                        </article>
+                    </div>
+                    <button id="save-btn" class="btn">Save</button>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script>
+        const categories = [
+            { id: 'dining', name: 'Dining & Food' },
+            { id: 'rent', name: 'Rent & Utilities' },
+            { id: 'transportation', name: 'Transportation' }
+        ];
+
+        function loadFromStorage() {
+            categories.forEach(cat => {
+                const spent = localStorage.getItem(`spent-${cat.id}`) || document.getElementById(`spent-${cat.id}`).value;
+                const budget = localStorage.getItem(`budget-${cat.id}`) || document.getElementById(`budget-${cat.id}`).value;
+                document.getElementById(`spent-${cat.id}`).value = spent;
+                document.getElementById(`budget-${cat.id}`).value = budget;
+                updateCategory(cat.id, parseFloat(spent), parseFloat(budget));
+            });
+        }
+
+        function updateCategory(id, spent, budget) {
+            const card = document.getElementById(`${id}-card`);
+            const statusP = card.querySelector('.status-text');
+            const spentBudgetP = card.querySelector('.spent-budget');
+            const progressFill = card.querySelector('.progress-fill');
+            const percentage = budget > 0 ? Math.min((spent / budget) * 100, 100) : 0;
+            progressFill.style.width = `${percentage}%`;
+            spentBudgetP.textContent = `Spent $${spent.toFixed(2)} / Budget $${budget.toFixed(2)}`;
+            if (spent > budget) {
+                progressFill.className = 'progress-fill red';
+                const over = spent - budget;
+                statusP.textContent = `Overspent by $${over.toFixed(2)}`;
+                statusP.className = 'status-text red';
+            } else {
+                progressFill.className = 'progress-fill green';
+                const available = budget - spent;
+                statusP.textContent = `$${available.toFixed(2)} available`;
+                statusP.className = 'status-text green';
+            }
+        }
+
+        document.getElementById('save-btn').addEventListener('click', () => {
+            categories.forEach(cat => {
+                const spent = parseFloat(document.getElementById(`spent-${cat.id}`).value) || 0;
+                const budget = parseFloat(document.getElementById(`budget-${cat.id}`).value) || 0;
+                localStorage.setItem(`spent-${cat.id}`, spent.toString());
+                localStorage.setItem(`budget-${cat.id}`, budget.toString());
+                updateCategory(cat.id, spent, budget);
+            });
+        });
+
+        window.addEventListener('load', loadFromStorage);
+    </script>
+</body>
+</html>
