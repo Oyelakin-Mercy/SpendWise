@@ -25,7 +25,7 @@ export async function logOut() {
 
 export async function sendPasswordResetEmail(email) {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/pages/update-password.html`
+        redirectTo: 'https://joinspendwise.vercel.app/pages/update-password.html'
     })
     if (error) throw error
 }
@@ -33,7 +33,7 @@ export async function sendPasswordResetEmail(email) {
 export async function signInWithGoogle() {
     const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/pages/currency.html` }
+        options: { redirectTo: 'https://joinspendwise.vercel.app/pages/currency.html' }
     })
     if (error) throw error
 }
