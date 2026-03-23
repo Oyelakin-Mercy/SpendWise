@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Insights</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <style>
+        .insights-main {
+            padding: 40px 48px;
+            background-color: #F3F3F3;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .insights-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .insights-header-left p { color: #454652; font-size: 15px; margin: 6px 0 0; max-width: 520px; line-height: 1.6; }
+        .insights-title { font-size: 38px; font-weight: 800; color: #000666; letter-spacing: -2px; margin: 0; line-height: 1.4; }
+
+        .refresh-btn {
+            display: flex; align-items: center; gap: 8px;
+            background: #000666; color: white; border: none; border-radius: 10px;
+            padding: 12px 24px; font-size: 13px; font-weight: 700; letter-spacing: 1px;
+            cursor: pointer; transition: background 0.2s; font-family: inherit; margin-top: 8px;
+            white-space: nowrap;
+        }
+        .refresh-btn:hover { background: #1A237E; }
+        .refresh-btn:disabled { background: #C6C5D4; cursor: not-allowed; }
+
+        .stat-row { display: flex; gap: 16px; }
+        .stat-pill { background: white; border-radius: 12px; padding: 16px 24px; display: flex; flex-direction: column; gap: 4px; flex: 1; border: none; }
+        .stat-pill .pill-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #454652; }
+        .pill-label { height: 24px; }
+        .stat-pill .pill-value { font-size: 20px; font-weight: 700; color: #000666; }
+        .stat-pill .pill-sub { font-size: 14px; color: #454652; }
+
+        .insights-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+        .insight-card {
+            background: white; border-radius: 16px; padding: 20px;
+            display: flex; flex-direction: column; gap: 14px;
+            border: 1px solid #E8E8E8; animation: fadeUp 0.4s ease both;
+        }
+        .insight-card.hero { grid-column: span 2; }
+        .insight-card.positive { background-color: #A0F399; }
+        .insight-card.warning  { background-color: #FFDAD6; }
+        .insight-card.alert    { background-color: #fae3e1; }
+        .insight-card.digest   { background-color: #EEEEEE; }
+        .insight-card.neutral  { background-color: #dfdede; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .insight-card:nth-child(1){animation-delay:.05s} .insight-card:nth-child(2){animation-delay:.10s}
+        .insight-card:nth-child(3){animation-delay:.15s} .insight-card:nth-child(4){animation-delay:.20s}
+        .insight-card:nth-child(5){animation-delay:.25s} .insight-card:nth-child(6){animation-delay:.30s}
+
+        .card-meta { display: flex; justify-content: space-between; align-items: center; }
+        .card-badge { font-size: 9px; font-weight: 700; letter-spacing: 2px; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
+        .badge-positive{background:#DCFCE7;color:#217128} .badge-warning{background:#FFF3E0;color:#93000A}
+        .badge-alert{background:#FFE5E5;color:#93000A}    .badge-digest{background:#E0E0FF;color:#000666}
+        .badge-neutral{background:#F0F0F0;color:#454652}
+        .card-time { font-size: 10px; color: #454652; letter-spacing: 1px; font-weight: 600; }
+        .card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .insight-card.alert .card-title{color:#93000A}
+        .insight-card.warning .card-title{color:#93000A}
+        .insight-card.neutral .card-title{color:#454652}
+        .insight-card.digest .card-title{color:#1A237E}
+        .insight-card.positive .card-title{color:#217128}
+        .card-body { font-size: 13px; color: #454652; line-height: 1.7; height: 100px; }
+        .card-actions { display: flex; gap: 10px; }
+        .action-btn { font-size: 12px; font-weight: 700; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; }
+        .action-btn.primary { background: #000666; color: white; }
+        .action-btn.danger  { background: #93000A; color: white; }
+        .insight-card.positive .action-btn { background: #217128; color: white; }
+        .insight-card.warning  .action-btn { background: #93000A; color: white; }
+        .insight-card.alert    .action-btn { background: #93000A; color: white; }
+        .insight-card.digest   .action-btn { background: #1A237E; color: white; }
+        .insight-card.neutral  .action-btn { background: #454652; color: white; }
+        .helpful-row { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+        .helpful-row span { font-size: 11px; color: #454652; font-weight: 600; letter-spacing: 1px; }
+        .helpful-btn { display: flex; align-items: center; gap: 5px; padding: 6px 14px; border-radius: 20px; border: 1px solid #E2E2E2; background: white; font-size: 11px; font-weight: 700; color: #454652; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .helpful-btn:hover { border-color: #000666; color: #000666; }
+        .helpful-btn.voted { background: #E0E0FF; border-color: #000666; color: #000666; }
+
+        .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 80px 0; }
+        .loading-spinner { width: 48px; height: 48px; border: 3px solid #E2E2E2; border-top-color: #000666; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-state p { font-size: 14px; font-weight: 600; letter-spacing: 1px; margin: 0; color: #000666; }
+        .loading-state small { font-size: 12px; color: #454652; margin-top: -12px; }
+        .error-state { text-align: center; padding: 60px 24px; }
+        .error-state h3 { color: #93000A; font-size: 18px; margin-bottom: 8px; }
+        .error-state code { background: #F0F0F0; padding: 10px 16px; border-radius: 8px; font-size: 12px; color: #454652; display: block; margin: 12px auto; max-width: 560px; word-break: break-all; line-height: 1.6; }
+
+        .chat-section { background: white; border-radius: 16px; border: 1px solid #E8E8E8; overflow: hidden; width: 350px; }
+        .chat-header { background: #000666; color: white; padding: 18px; display: flex; align-items: center; gap: 12px; }
+        .chat-header-dot { width: 10px; height: 10px; background: #1B6D24; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .chat-header-title { font-weight: 600; font-size: 14px; letter-spacing: 0.5px; }
+        .chat-header-sub { font-size: 11px; opacity: 0.7; margin-left: auto; }
+        .chat-messages { padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; max-height: 340px; overflow-y: auto; }
+        .chat-msg { max-width: 75%; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.6; animation: fadeUp 0.3s ease both; }
+        .chat-msg.ai { background: #F0F4FF; color: #1A1C1C; border-bottom-left-radius: 4px; align-self: flex-start; }
+        .chat-msg.user { background: #000666; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+        .chat-msg.thinking { background: #F0F0F0; color: #999; font-style: italic; align-self: flex-start; }
+        .chat-input-row { display: flex; gap: 12px; padding: 16px 28px; border-top: 1px solid #E8E8E8; }
+        #chat-input { flex: 1; border: 1px solid #E2E2E2; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: inherit; outline: none; background: #F9F9F9; color: #1A1C1C; }
+        #chat-input:focus { border-color: #000666; background: white; }
+        #chat-send { background: #000666; color: white; border: none; border-radius: 10px; padding: 12px 24px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+        #chat-send:disabled { background: #C6C5D4; cursor: not-allowed; }
+        .suggested-questions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 28px 20px; }
+        .sq-btn { font-size: 11px; font-weight: 600; padding: 7px 14px; border-radius: 20px; border: 1px solid #E2E2E2; background: white; cursor: pointer; color: #454652; font-family: inherit; }
+        .sq-btn:hover { border-color: #000666; color: #000666; background: #F0F4FF; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 48px; background: white; border-bottom: 1px solid #E2E2E2; }
+        .topbar-title { font-size: 14px; font-weight: 700; color: #000666; letter-spacing: 1px; }
+
+        @media (max-width: 768px) {
+
+            .insights-main {
+                padding: 20px 16px 90px 16px;
+                gap: 20px;
+            }
+
+            .insights-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .insights-title {
+                font-size: 26px;
+                letter-spacing: -1px;
+            }
+
+            .refresh-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stat-row {
+                flex-wrap: wrap;
+            }
+
+            .stat-pill {
+                flex: 1 1 calc(50% - 8px);
+                min-width: 0;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .insight-card.hero {
+                grid-column: span 1;
+            }
+
+            .card-body {
+                height: auto;
+            }
+
+            aside > div:last-child {
+                display: none !important;
+            }
+
+            #chat-popup {
+                right: 0 !important;
+                left: 0 !important;
+                bottom: 70px !important;
+                width: 100% !important;
+                padding: 0 12px;
+            }
+
+            .chat-section {
+                width: 100% !important;
+            }
+
+            #chat-fab {
+                bottom: 72px !important;
+                right: 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="history-container">
+    <aside>
+        <div style="display:flex;align-items:center;color:#000666;height:45px;gap:10px;padding:10px;">
+            <img src="/images/logospend.png" alt="" width="28.5px" height="27px">
+            <a style="font-size:20px;font-weight:bold;letter-spacing:-1.5px;">SpendWise</a>
+        </div>
+        <div class="side-navs">
+            <div><a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a></div>
+            <div><a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a></div>
+            <div><a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a></div>
+            <div><a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI Assistant</span></a></div>
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;height:100%;">
+            <div style="display:flex;flex-direction:column;justify-content:flex-end;height:100%;">
+                <button id="logout-btn" style="background:none;border:1px solid #E0E0E0;border-radius:8px;padding:10px;cursor:pointer;color:#454652;font-size:13px;font-weight:600;margin-bottom:10px;width:100%;">Sign Out</button>
+                <div style="color:white;border-radius:8px;background-color:#1A237E;padding:10px;height:70px;display:flex;align-items:center;flex-direction:column;justify-content:center;">
+                    <div style="font-size:12px;line-height:20px;">CURRENT BALANCE</div>
+                    <div style="font-size:20px;" id="sidebar-balance">0.00</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="main-container" style="overflow-y:auto;">
+        <div class="insights-main">
+            <div class="insights-header">
+                <div class="insights-header-left">
+                    <h1 class="insights-title">Smart Ledger</h1>
+                    <p id="header-sub">Your AI-driven financial audit. Loading your transactions.</p>
+                </div>
+                <button class="refresh-btn" id="refresh-btn" onclick="runAgent()">⟳ &nbsp;Refresh Analysis</button>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-pill">
+                    <div class="pill-label">TRANSACTIONS ANALYSED</div>
+                    <div class="pill-value" id="stat-count">—</div>
+                    <div class="pill-sub">This month</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="pill-label">TOP SPEND CATEGORY</div>
+                    <div class="pill-value" id="stat-category">—</div>
+                    <div class="pill-sub" id="stat-category-amount">Loading…</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="pill-label">MONTHLY EXPENSES</div>
+                    <div class="pill-value" id="stat-expenses">—</div>
+                    <div class="pill-sub" id="stat-income-label">vs income</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="pill-label">SAVINGS RATE</div>
+                    <div class="pill-value" id="stat-savings-rate">—</div>
+                    <div class="pill-sub">Of monthly income</div>
+                </div>
+            </div>
+
+            <div id="insights-container">
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>ANALYSING YOUR FINANCES</p>
+                    <small>Claude AI is reviewing your transactions…</small>
+                </div>
+            </div>
+
+            <button id="chat-fab" onclick="toggleChat()" style="
+                position: fixed; bottom: 32px; right: 32px;
+                width: 56px; height: 56px; border-radius: 50%;
+                background: #000666; color: white; border: none;
+                font-size: 24px; cursor: pointer; z-index: 1000;
+                display: flex; align-items: center; justify-content: center;
+                transition: background 0.2s;">💬</button>
+
+            <div id="chat-popup" style="
+                position: fixed; bottom: 100px; right: 32px;
+                width: 360px; z-index: 999;
+                display: none; flex-direction: column;
+                border-radius: 16px; overflow: hidden;">
+                <div class="chat-section" style="margin:0; width:100%;">
+                    <div class="chat-header" style="cursor:pointer;" onclick="toggleChat()">
+                        <div class="chat-header-dot"></div>
+                        <div><div class="chat-header-title">Ask your AI Financial Advisor</div></div>
+                        <div class="chat-header-sub">✕ Close</div>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="chat-msg ai">Hi! I'm your SpendWise AI advisor. Ask me anything about your finances.</div>
+                    </div>
+                    <div class="suggested-questions" id="suggested-questions">
+                        <button class="sq-btn" onclick="askSuggested(this)">Where am I overspending?</button>
+                        <button class="sq-btn" onclick="askSuggested(this)">How can I save more this month?</button>
+                        <button class="sq-btn" onclick="askSuggested(this)">What's my biggest expense category?</button>
+                        <button class="sq-btn" onclick="askSuggested(this)">Give me a weekly budget plan</button>
+                    </div>
+                    <div class="chat-input-row">
+                        <input type="text" id="chat-input" placeholder="Ask anything about your finances…">
+                        <button id="chat-send" onclick="sendChat()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-bottom-nav">
+    <a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a>
+    <a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a>
+    <a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a>
+    <a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI</span></a>
+</div>
+
+<script type="module">
+import { supabase } from '/js/supabase.js'
+
+const EDGE_FN_URL = 'https://rnglffmqnchmibqixcoq.supabase.co/functions/v1/claude-proxy'
+
+function fmt(n, sym = '₦') {
+    return sym + Number(n).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
+async function getUser() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { window.location.href = '/pages/login.html'; return null }
+    return user
+}
+
+async function getSymbol(userId) {
+    const { data } = await supabase.from('profiles').select('currency_symbol').eq('id', userId).maybeSingle()
+    if (data?.currency_symbol) return data.currency_symbol
+    const prefs = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}')
+    return prefs.currency?.symbol || '₦'
+}
+
+async function fetchTransactions(userId) {
+    const { data, error } = await supabase.from('transactions').select('*').eq('user_id', userId).order('created_at', { ascending: false })
+    if (error) { console.error('Supabase fetch error:', error); return [] }
+    return data || []
+}
+
+window.toggleChat = function() {
+    const popup = document.getElementById('chat-popup')
+    const isOpen = popup.style.display === 'flex'
+    popup.style.display = isOpen ? 'none' : 'flex'
+    document.getElementById('chat-fab').textContent = isOpen ? '💬' : '✕'
+}
+
+async function callClaude(messages) {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+    if (sessionError || !session) throw new Error('Not authenticated. Please log in again.')
+
+    const res = await fetch(EDGE_FN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+        body: JSON.stringify({ messages })
+    })
+
+    if (!res.ok) {
+        const errText = await res.text().catch(() => 'No response body')
+        throw new Error(`Edge Function returned ${res.status}: ${errText}`)
+    }
+
+    const data = await res.json()
+    if (data.error) throw new Error(typeof data.error === 'string' ? data.error : JSON.stringify(data.error))
+
+    const text = data.content?.find(b => b.type === 'text')?.text
+    if (!text) throw new Error('Claude returned an empty response.')
+    return text
+}
+
+function buildSummary(transactions, symbol) {
+    const thisMonth = new Date().toISOString().slice(0, 7)
+    const monthly   = transactions.filter(t => t.date?.startsWith(thisMonth))
+
+    let totalIncome = 0, totalExpenses = 0
+    const catTotals = {}, catCounts = {}
+
+    monthly.forEach(t => {
+        const amt = Number(t.amount)
+        if (t.type === 'income') { totalIncome += amt; return }
+        totalExpenses += amt
+        catTotals[t.category] = (catTotals[t.category] || 0) + amt
+        catCounts[t.category] = (catCounts[t.category] || 0) + 1
+    })
+
+    const sorted = Object.entries(catTotals).sort((a, b) => b[1] - a[1])
+    const topCat = sorted[0]
+
+    document.getElementById('stat-count').textContent           = monthly.length
+    document.getElementById('stat-category').textContent        = topCat ? topCat[0] : 'None'
+    document.getElementById('stat-category-amount').textContent = topCat ? fmt(topCat[1], symbol) : 'No expenses yet'
+    document.getElementById('stat-expenses').textContent        = fmt(totalExpenses, symbol)
+    document.getElementById('stat-income-label').textContent    = `vs ${fmt(totalIncome, symbol)} income`
+
+    const savingsRate = totalIncome > 0 ? (((totalIncome - totalExpenses) / totalIncome) * 100).toFixed(0) + '%' : '—'
+    document.getElementById('stat-savings-rate').textContent = savingsRate
+    document.getElementById('header-sub').textContent =
+        `Your AI-driven financial audit. We've analysed ${monthly.length} transactions this month to surface actionable growth opportunities.`
+
+    const catLines    = sorted.map(([c, a]) => `  - ${c}: ${fmt(a, symbol)} (${catCounts[c]} transactions)`).join('\n')
+    const recentLines = transactions.slice(0, 20).map(t =>
+        `  [${t.date}] ${t.type.toUpperCase()} ${fmt(Number(t.amount), symbol)} | ${t.category || 'uncategorised'} | ${t.note || ''}`
+    ).join('\n')
+
+    const prompt = `You are a financial AI advisor for SpendWise. Analyse this user's real transaction data and generate 5-6 concise, actionable financial insights.
+
+MONTHLY SUMMARY (${thisMonth}):
+- Total Income: ${fmt(totalIncome, symbol)}
+- Total Expenses: ${fmt(totalExpenses, symbol)}
+- Net: ${fmt(totalIncome - totalExpenses, symbol)}
+- Savings Rate: ${savingsRate}
+
+SPENDING BY CATEGORY:
+${catLines || '  No expense data yet.'}
+
+RECENT TRANSACTIONS (latest 20):
+${recentLines || '  No transactions recorded yet.'}
+
+TOTAL ALL-TIME TRANSACTIONS: ${transactions.length}
+
+IMPORTANT: Respond ONLY with a raw JSON array. No markdown, no code fences, no explanation text before or after — just the JSON array itself.
+Each object must have exactly these fields:
+{
+  "type": "positive" | "warning" | "alert" | "digest" | "neutral",
+  "icon": "<single emoji>",
+  "title": "<punchy title under 8 words>",
+  "body": "<2-3 sentences using specific numbers from the data>",
+  "badge": "<short label e.g. SURPLUS · TRANSPORT · SAVINGS>",
+  "action": "<CTA button text, or null if none needed>",
+  "hero": true or false
+}
+Exactly one card should have hero: true. Be specific and data-driven. If data is limited, give general budgeting advice but acknowledge it.`
+
+    return { prompt, totalIncome, totalExpenses, savingsRate }
+}
+
+function renderCards(insights) {
+    const container = document.getElementById('insights-container')
+    if (!insights || insights.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:80px 0;color:#454652"><h3 style="color:#000666;font-size:22px;margin-bottom:8px">Not enough data yet</h3><p>Add some transactions and come back — your AI advisor will have plenty to say.</p></div>`
+        return
+    }
+    insights = insights.slice(0, 5)
+    const badgeClass = { positive:'badge-positive', warning:'badge-warning', alert:'badge-alert', digest:'badge-digest', neutral:'badge-neutral' }
+    const iconBg     = { positive:'#DCFCE7', warning:'#FFF3E0', alert:'#FFE5E5', digest:'#E0E0FF', neutral:'#F0F0F0' }
+
+    container.innerHTML = `<div class="insights-grid">${insights.map((ins, i) => `
+        <div class="insight-card ${ins.type}${ins.hero ? ' hero' : ''}">
+            <div class="card-meta">
+                <span class="card-badge ${badgeClass[ins.type] || 'badge-neutral'}">${ins.badge || 'INSIGHT'}</span>
+                <span class="card-time">${i === 0 ? 'JUST NOW' : 'AI ANALYSIS'}</span>
+            </div>
+            <div class="card-icon" style="background:${iconBg[ins.type] || '#F0F0F0'}"><img src="/images/${{positive:'surplus', warning:'warning', alert:'alert', digest:'increase', neutral:'increase'}[ins.type]}.png" width="24" height="18" onerror="this.src='/images/car.png'"></div>
+            <div style="font-weight: bold" class="card-title">${ins.title}</div>
+            <div class="card-body">${ins.body}</div>
+            ${ins.action ? `<div class="card-actions"><button class="action-btn ${ins.type === 'alert' ? 'danger' : 'primary'}">${ins.action}</button></div>` : ''}
+            <div class="helpful-row">
+                <span>HELPFUL?</span>
+                <button class="helpful-btn" onclick="vote(this)">👍 Yes</button>
+                <button class="helpful-btn" onclick="vote(this)">👎 No</button>
+            </div>
+        </div>`).join('')}
+    </div>`
+}
+
+window.vote = function(btn) {
+    btn.closest('.helpful-row').querySelectorAll('.helpful-btn').forEach(b => b.classList.remove('voted'))
+    btn.classList.add('voted')
+}
+
+let txCache = [], symCache = '₦'
+
+window.runAgent = async function() {
+    const btn = document.getElementById('refresh-btn')
+    btn.disabled = true; btn.textContent = '⟳  Analysing…'
+
+    document.getElementById('insights-container').innerHTML = `
+        <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>ANALYSING YOUR FINANCES</p>
+            <small>Claude AI is reviewing your transactions…</small>
+        </div>`
+
+    try {
+        const { prompt } = buildSummary(txCache, symCache)
+        const rawText    = await callClaude([{ role: 'user', content: prompt }])
+        const clean      = rawText.replace(/```json|```/g, '').trim()
+        const insights   = JSON.parse(clean)
+        renderCards(insights)
+    } catch (err) {
+        console.error('Agent error:', err)
+        document.getElementById('insights-container').innerHTML = `
+            <div class="error-state">
+                <h3>Analysis failed</h3>
+                <p style="color:#454652;font-size:14px;">Open the browser console (F12 → Console) for the full error.</p>
+                <code>${err.message}</code>
+            </div>`
+    } finally {
+        btn.disabled = false; btn.textContent = '⟳  Refresh Analysis'
+    }
+}
+
+function appendMsg(text, role) {
+    const msgs = document.getElementById('chat-messages')
+    const div  = document.createElement('div')
+    div.className = `chat-msg ${role}`; div.textContent = text
+    msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight
+    return div
+}
+
+window.askSuggested = function(btn) {
+    document.getElementById('chat-input').value = btn.textContent
+    sendChat()
+}
+
+window.sendChat = async function() {
+    const input    = document.getElementById('chat-input')
+    const sendBtn  = document.getElementById('chat-send')
+    const question = input.value.trim()
+    if (!question) return
+
+    document.getElementById('suggested-questions').style.display = 'none'
+    appendMsg(question, 'user')
+    input.value = ''; sendBtn.disabled = true
+
+    const thinking = appendMsg('Thinking…', 'ai thinking')
+
+    try {
+        const { prompt: ctx } = buildSummary(txCache, symCache)
+        const chatPrompt = `${ctx}\n\nThe user asks: "${question}"\n\nRespond conversationally in 2-4 sentences. Be specific — use actual numbers from their data. No markdown formatting.`
+        const text = await callClaude([{ role: 'user', content: chatPrompt }])
+        thinking.textContent = text; thinking.className = 'chat-msg ai'
+    } catch (err) {
+        thinking.textContent = `Error: ${err.message}`; thinking.className = 'chat-msg ai'
+    } finally {
+        sendBtn.disabled = false
+    }
+}
+
+document.getElementById('chat-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat() })
+
+document.getElementById('logout-btn')?.addEventListener('click', async () => {
+    await supabase.auth.signOut()
+    window.location.href = '/pages/login.html'
+})
+
+async function boot() {
+    const user = await getUser(); if (!user) return
+    symCache = await getSymbol(user.id)
+    txCache  = await fetchTransactions(user.id)
+
+    const balance = txCache.reduce((s, t) => t.type === 'income' ? s + Number(t.amount) : s - Number(t.amount), 0)
+    document.getElementById('sidebar-balance').textContent = fmt(balance, symCache)
+
+    document.querySelectorAll('.side-navs div a').forEach(link => {
+        if (link.href === window.location.href) link.classList.add('active')
+    })
+
+    buildSummary(txCache, symCache)
+    runAgent()
+}
+
+boot()
+</script>
+</body>
+</html>

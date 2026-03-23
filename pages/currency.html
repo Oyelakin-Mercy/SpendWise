@@ -3,141 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpendWise AI</title>
-    <link rel="stylesheet" href="styles/currency.css">
+    <title>Currency</title>
+    <link rel="stylesheet" href="/styles/currency.css">
 </head>
 <body>
-    <nav class="nav-bar">
-        <div class="nav-left">
-            <img src="wallet.png" alt="wallet">
-            <h2>SpendWise AI</h2>
-        </div>
+    <div>
+        <nav>
+            <div style="display: flex; align-items: center; color: #000666; height: 45px; gap: 10px; padding: 10px;">
+                <svg width="28.5" height="27" viewBox="0 0 29 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="29" height="27" rx="6" fill="#000666"/>
+                    <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14" font-weight="bold" font-family="Inter">S</text>
+                </svg>
+                <a style="font-size: 20px; font-weight: bold; letter-spacing: -1.5px;">SpendWise</a>
+            </div>
+        </nav>
 
-        <div class="nav-button">
-            <a href="#">DASHBOARD</a>
-            <a href="#">HISTORY</a>
-            <a href="#">BUDGET</a>
-            <a href="#">SAVINGS</a>
-            <a href="#">AI</a>
-        </div>
-        <div class="nav-icons">
-        <a href="#" class="icon">🔍</a>
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 64px 24px 90px 24px">
+            <div>
+                <div style="color: #1B6D24; font-size: 12px; font-weight: bold;">PERSONALIZATION</div>
+                <h2>Choose your primary currency</h2>
+                <p class="currency-para">Define the ledger baseline for your global financial journey. All analytics and AI insights will be calculated in this denomination.</p>
+            </div>
 
-        <div class="notification">
-        <span class="icon" id="bell">🔔</span>
+            <!-- Primary 3 -->
+            <div style="display: flex; gap: 24px;" class="primary-cards-row">
+                <div class="currency-button active" data-symbol="$" data-code="USD" data-label="US Dollar ($)">
+                    <div class="icon-wrap">$</div>
+                    <div class="code">USD</div>
+                    <div class="name">United States Dollar</div>
+                </div>
+                <div class="currency-button" data-symbol="€" data-code="EUR" data-label="Euro (€)">
+                    <div class="icon-wrap">€</div>
+                    <div class="code">EUR</div>
+                    <div class="name">European Union Euro</div>
+                </div>
+                <div class="currency-button" data-symbol="£" data-code="GBP" data-label="British Pound (£)">
+                    <div class="icon-wrap">£</div>
+                    <div class="code">GBP</div>
+                    <div class="name">British Pound Sterling</div>
+                </div>
+            </div>
+
+            <!-- Secondary row -->
+            <div style="display: flex; gap: 56px; justify-content: center; padding: 20px;" class="secondary-cards-row">
+                <div class="secondary-btn" data-symbol="₦" data-code="NGN" data-label="Nigerian Naira (₦)">
+                    <div class="icon-wrap">₦</div>
+                    <div>
+                        <div style="color: #1A1C1C; font-weight: bold; font-size: 12px">NGN</div>
+                        <div style="font-size: 9px; color: #454652; letter-spacing: 2px;">NAIRA</div>
+                    </div>
+                </div>
+                <div class="secondary-btn" data-symbol="KSh" data-code="KES" data-label="Kenyan Shilling (KSh)">
+                    <div class="icon-wrap" style="font-size:13px;">KSh</div>
+                    <div>
+                        <div style="color: #1A1C1C; font-weight: bold; font-size: 12px">KES</div>
+                        <div style="font-size: 9px; color: #454652; letter-spacing: 2px;">KENYAN SHILLINGS</div>
+                    </div>
+                </div>
+                <div class="secondary-btn" data-symbol="R" data-code="ZAR" data-label="South African Rand (R)">
+                    <div class="icon-wrap">R</div>
+                    <div>
+                        <div style="color: #1A1C1C; font-weight: bold; font-size: 12px">ZAR</div>
+                        <div style="font-size: 9px; color: #454652; letter-spacing: 2px;">RAND</div>
+                    </div>
+                </div>
+                <div class="secondary-btn" data-symbol="ZiG" data-code="ZWG" data-label="Zimbabwe Gold (ZiG)">
+                    <div class="icon-wrap" style="font-size:13px;">ZiG</div>
+                    <div>
+                        <div style="color: #1A1C1C; font-weight: bold; font-size: 12px">ZWG</div>
+                        <div style="font-size: 9px; color: #454652; letter-spacing: 2px;">ZIMBABWE GOLD</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selected bar -->
+            <div id="selected-bar">
+                <div style="display: flex; gap: 16px; align-items: center;" >
+                    <div id="bar-icon" style="background-color: white; color: #000666; border-radius: 12px; font-size: 20px; height: 40px; width: 40px; display: flex; align-items: center; justify-content: center;">$</div>
+                    <div>
+                        <div id="bar-label" style="font-weight: bold; font-size: 16px; color: #000666;">Selected: US Dollar ($)</div>
+                        <div style="color: #454652; font-size: 12px;">This will apply to all your linked accounts.</div>
+                    </div>
+                </div>
+                <button id="confirm-btn">Confirm Selection →</button>
+            </div>
+
+            <div style="display: flex; gap: 40px; margin-top: 55px;" class="info-blurbs-row">
+                <div>
+                    <div style="color: #000666; font-weight: bold; margin-bottom: 12px; letter-spacing: -0.7px;">PRECISION REPORTING</div>
+                    <div style="color: #454652; font-size: 14px; line-height: 22px;">SpendWise utilizes institutional-grade currency conversion feeds to ensure your balance is accurate to 4 decimal places.</div>
+                </div>
+                <div>
+                    <div style="color: #000666; font-weight: bold; margin-bottom: 12px; letter-spacing: -0.7px;">MULTI-VAULT SUPPORT</div>
+                    <div style="color: #454652; font-size: 14px; line-height: 22px;">Selecting a primary currency doesn't limit you. You can still hold and track individual assets in their native denominations.</div>
+                </div>
+                <div>
+                    <div style="color: #000666; font-weight: bold; margin-bottom: 12px; letter-spacing: -0.7px;">ONE-TIME-CHANGE</div>
+                    <div style="color: #454652; font-size: 14px; line-height: 22px;">Currency settings can be adjusted later in settings, but historical trend comparisons may take up to 24 hours to re-index.</div>
+                </div>
+            </div>
+        </div>
     </div>
-    </nav>
-
-    <main >
-    <div class="currency">
-    <h6>PERSONALIZATION</h6>
-    <h1>Choose your primary currency</h1>
-    <p>Define the ledger baseline for your global 
-     financial journey.<br> AI analytics and AI
-     insights will be calculated in this <br>
-     denomination.</p>
-     </div>
-    
-    <div class="currency-box">
-
-        <div class="box1 selected" >
-            <div class="symbol">$</div>
-            <h3>US</h3>
-            <p>United States Dollar</p>
-            <span class="number">01</span>
-        </div>
-         
-        <div class="box1">
-            <div class="symbol">€</div>
-            <h4>EUR</h4>
-            <p>European Union Euro</p>
-            <span class="number">02</span>
-        </div>
-  
-        <div class="box1">
-           <div class="symbol">£</div>
-            <h4>GBP</h4>
-            <p>British Pound Sterling</p>
-            <span class="number">03</span>
-        </div>
-    </div>    
-    
-    <div class="currency-box2">
-        <div class="box">
-        <div class="sym">¥</div>
-        <div>
-        <h5>JPY</h5>
-        <p class="text">JAPENESE YEN</p>
-        </div>
-        </div>
-        
-        <div class="box">
-        <div class="sym">₹</div>
-        <div>
-        <h5>INR </h5>
-        <p class="text">INDIAN RUPEE</p>
-        </div>
-        </div>
-        
-        <div class="box">
-        <div class="sym">₺</div>
-        <div>
-        <h5>TRY</h5>
-        <p class="text">TURKISH LIRA</p>
-        </div>
-        </div>
-        
-        <div class=box>
-        <div class="sym">₣</div>
-        <div>
-        <h5>CHF</h5>
-        <p class="text">SWISS FRANC</p>
-        </div>
-        </div>
-    </div>
-    
-    <div class="currency-select">
-        <div class="select-left">
-        <img src="bank.png" alt="bank temple icon">
-
-        <div class="text1">
-            <h3>Selected: US Dollars ($)</h3>
-            <p>This will apply to all your linked accounts.</p>
-        </div>
-        </div>
-            <button>
-                <strong>Confirm Selection →</strong>
-            </button>
-    </div>
-    
-    <div class="mini-card">
-        <div>
-        <h5>PRECISION REPORTING</h5>
-        <br>
-        <p>SpendWise AI utilizes institutional-grade
-        currency conversion feeds to ensure
-        your balance is accurate to 4 decimal
-        places.</p>
-        </div>
-        
-        <div>
-        <h5>MULTI-VAULT SUPPORT</h5>
-        <br>
-        <p>Selecting a primary currency doesn't
-        limit you. You can still hold and track
-        individual assets in their native
-        denominations.</p>
-        </div>
-        
-        <div>
-        <h5>ONE-TIME CHANGE</h5>
-        <br>
-        <p>Currency settings can be adjusted later
-        in settings, but historical trend comparisons 
-        may take up to 24 hours to re-index.</p>
-        </div>   
-    </div>
-
-    </main>
+<script src="/js/currency-helper.js"></script>
+<script type="module" src="/js/currency.js"></script>
 </body>
 </html>

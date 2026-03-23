@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <link rel="stylesheet" href="/styles/history.css">
+
+</head>
+<body>
+    <div class="history-container">
+        <aside>
+            <div style="display: flex; align-items: center; color: #000666; height: 45px; gap: 10px; padding: 10px;">
+                <img src="/images/logospend.png" alt="" width="28.5px" height="27px">
+                <a style="font-size: 20px; font-weight: bold; letter-spacing: -1.5px;">SpendWise</a>
+            </div>
+            <div class="side-navs">
+                <div><a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a></div>
+                <div><a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a></div>
+                <div><a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a></div>
+                <div><a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI Assistant</span></a></div>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%;">
+               
+                <div>
+                    <div style="display:flex;flex-direction:column;justify-content:flex-end;height:100%;">
+                    <button id="logout-btn" style="background:none;border:1px solid #E0E0E0;border-radius:8px;padding:10px;cursor:pointer;color:#454652;font-size:13px;font-weight:600;margin-bottom:10px;width:100%;">Sign Out</button>
+                    <div style="color: white; border-radius: 8px; background-color: #1A237E; padding: 10px; height: 70px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 12px; line-height: 20px;">CURRENT BALANCE</div>
+                        <div style="font-size: 20px;" id="sidebar-balance">0.00</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-container">
+            <nav><div style="color: #000767; font-weight: bold; font-size: 14px;">History</div></nav>
+            <div class="main-history">
+
+                <div class="history-title">
+                    <div>History</div>
+                    <p>All your financial movements in one place.</p>
+                </div>
+
+                <div class="history-filters" style="display: flex; gap: 16px; font-size: 14px;">
+                    <div id="filter-all"      class="filter-btn active-filter" onclick="setFilter('all')">All types</div>
+                    <div id="filter-expense"  class="filter-btn" onclick="setFilter('expense')">Expenses</div>
+                    <div id="filter-income"   class="filter-btn" onclick="setFilter('income')">Income</div>
+                </div>
+
+                <div id="transactions-list"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="mobile-bottom-nav">
+    <a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a>
+    <a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a>
+    <a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a>
+    <a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI</span></a>
+</div>
+    <script src="/js/currency-helper.js"></script>
+    <script type="module" src="/js/history.js"></script>
+
+</body>
+</html>

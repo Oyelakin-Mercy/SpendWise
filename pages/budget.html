@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <style>
+        .budget-main {
+            padding: 40px 42px;
+            background-color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .budget-header h1 {
+            font-size: 40px;
+            font-weight: 800;
+            color: #000666;
+            letter-spacing: -3px;
+            margin: 0 0 6px;
+            line-height: 1.3;
+        }
+
+        .budget-header p {
+            color: #454652;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #E8E8E8;
+            gap: 40px;
+        }
+
+        .summary-allocated .label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #454652;
+            margin-bottom: 4px;
+        }
+
+        .summary-allocated .value {
+            font-size: 36px;
+            font-weight: 900;
+            color: #000666;
+            letter-spacing: -2px;
+        }
+
+        .summary-progress { width: 300px; }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-top span { font-size: 13px; font-weight: 600; color: #454652; }
+        .progress-top strong { font-size: 13px; color: #454652; }
+
+        .progress-bar-wrap {
+            background: #E8E8E8;
+            border-radius: 12px;
+            height: 14px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            background: #1B6D24;
+            transition: width 1s ease;
+        }
+
+        .progress-bar-fill.over { background: #BA1A1A; }
+
+        .progress-sub { font-size: 11px; color: #454652; margin-top: 6px; }
+
+        .summary-remaining .label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #1B6D24;
+            margin-bottom: 4px;
+            text-align: right;
+        }
+
+        .summary-remaining .label.over { color: #BA1A1A; }
+
+        .summary-remaining .value {
+            font-size: 28px;
+            font-weight: 900;
+            color: #1B6D24;
+            letter-spacing: -1.5px;
+            text-align: right;
+        }
+
+        .summary-remaining .value.over { color: #BA1A1A; }
+
+        .category-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-section-header h2 {
+            font-size: 19px;
+            font-weight: 700;
+            color: #000666;
+            margin: 0;
+        }
+
+        .create-btn {
+            background: #000666;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .create-btn:hover { background: #1A237E; }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .cat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #E8E8E8;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeUp 0.4s ease both;
+            transition: box-shadow 0.2s;
+        }
+
+        .cat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
+        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        .cat-card:nth-child(1){animation-delay:.05s} .cat-card:nth-child(2){animation-delay:.10s}
+        .cat-card:nth-child(3){animation-delay:.15s} .cat-card:nth-child(4){animation-delay:.20s}
+        .cat-card:nth-child(5){animation-delay:.25s} .cat-card:nth-child(6){animation-delay:.30s}
+
+        .cat-card-top { display: flex; align-items: flex-start; justify-content: space-between; }
+        .cat-card-left { display: flex; align-items: center; gap: 14px; }
+
+        .cat-icon-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cat-name { font-size: 16px; font-weight: 800; color: #000666; letter-spacing: -0.3px; }
+
+        .cat-status { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-top: 2px; }
+        .cat-status.safe { color: #1B6D24; }
+        .cat-status.over { color: #BA1A1A; }
+        .cat-status.warn { color: #E65100; }
+
+        .cat-edit-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #C6C5D4;
+            font-size: 18px;
+            padding: 4px;
+            transition: color 0.15s;
+        }
+
+        .cat-edit-btn:hover { color: #BA1A1A; }
+
+        .cat-amounts { display: flex; justify-content: space-between; font-size: 13px; }
+        .cat-spent { font-weight: 700; }
+        .cat-spent.over { color: #BA1A1A; }
+        .cat-spent.safe { color: #1A1C1C; }
+        .cat-budget { color: #454652; }
+
+        .cat-bar-wrap { background: #E8E8E8; border-radius: 8px; height: 8px; overflow: hidden; }
+        .cat-bar-fill { height: 100%; border-radius: 8px; background: #1B6D24; transition: width 1s ease; }
+        .cat-bar-fill.over { background: #BA1A1A; }
+        .cat-bar-fill.warn { background: #E65100; }
+
+        .cat-card.add-new {
+            border: 2px dashed #E2E2E2;
+            background: #FAFAFA;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            min-height: 140px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .cat-card.add-new:hover { border-color: #000666; background: #F0F4FF; }
+
+        .cat-card.add-new .plus-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #454652;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #454652;
+            transition: all 0.2s;
+        }
+
+        .cat-card.add-new:hover .plus-icon { border-color: #000666; color: #000666; }
+        .cat-card.add-new h3 { font-size: 16px; color: #454652; margin: 0; letter-spacing: -0.3px; }
+        .cat-card.add-new p { font-size: 11px; color: #a5a5a5; margin: 0; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
+
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 36px;
+            width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .modal h2 { font-size: 18px; font-weight: bold; color: #000666; margin: 0; }
+        .modal-field { display: flex; flex-direction: column; gap: 8px; }
+
+        .modal-field label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #454652; }
+
+        .modal-field input {
+            border: 1px solid #E2E2E2;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #1A1C1C;
+            outline: none;
+            background: #F9F9F9;
+        }
+
+        .modal-field input:focus { border-color: #000666; background: white; }
+
+        .modal-actions { display: flex; gap: 12px; }
+
+        .modal-save {
+            flex: 1;
+            background: #000666;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .modal-save:hover { background: #1A237E; }
+
+        .modal-cancel {
+            flex: 1;
+            background: #F3F3F3;
+            color: #454652;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        @media (max-width: 768px) {
+
+            .budget-main {
+                padding: 20px 16px 90px 16px;
+                gap: 20px;
+            }
+
+            .budget-header h1 {
+                font-size: 28px;
+                letter-spacing: -1.5px;
+            }
+
+            .summary-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 18px;
+            }
+
+            .summary-progress {
+                width: 100%;
+            }
+
+            .summary-remaining .label,
+            .summary-remaining .value {
+                text-align: left;
+            }
+
+            .category-section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .create-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal {
+                width: calc(100% - 32px);
+                padding: 24px 20px;
+                margin: 0 16px;
+            }
+
+            aside > div:last-child {
+                display: none !important;
+            }
+        }
+    </style>
+
+</head>
+<body>
+<div class="history-container">
+    <aside>
+        <div style="display:flex;align-items:center;color:#000666;height:45px;gap:10px;padding:10px;">
+            <img src="/images/logospend.png" alt="" width="28.5px" height="27px">
+            <a style="font-size:20px;font-weight:bold;letter-spacing:-1.5px;">SpendWise</a>
+        </div>
+        <div class="side-navs">
+            <div><a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a></div>
+            <div><a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a></div>
+            <div><a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a></div>
+            <div><a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI Assistant</span></a></div>
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;height:100%;">
+            <button id="logout-btn" style="background:none;border:1px solid #E0E0E0;border-radius:8px;padding:10px;cursor:pointer;color:#454652;font-size:13px;font-weight:600;margin-bottom:10px;width:100%;">Sign Out</button>
+            <div style="color:white;border-radius:8px;background-color:#1A237E;padding:10px;height:70px;display:flex;align-items:center;flex-direction:column;justify-content:center;">
+                <div style="font-size:12px;line-height:20px;">CURRENT BALANCE</div>
+                <div style="font-size:20px;" id="sidebar-balance">0.00</div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="main-container" style="overflow-y:auto;">
+        <div class="budget-main">
+
+            <div class="budget-header">
+                <h1>Budget</h1>
+                <p>Master your monthly allocation and spending limits.</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-allocated">
+                    <div class="label">TOTAL ALLOCATED</div>
+                    <div class="value" id="total-allocated">₦0.00</div>
+                </div>
+                <div class="summary-progress">
+                    <div class="progress-top">
+                        <span>Progress</span>
+                        <strong id="progress-pct">0% Utilized</strong>
+                    </div>
+                    <div class="progress-bar-wrap">
+                        <div class="progress-bar-fill" id="summary-bar" style="width:0%"></div>
+                    </div>
+                    <div class="progress-sub" id="progress-sub">₦0.00 SPENT OF YOUR TOTAL LIMIT</div>
+                </div>
+                <div class="summary-remaining">
+                    <div class="label" id="remaining-label">REMAINING BALANCE</div>
+                    <div class="value" id="remaining-value">₦0.00</div>
+                </div>
+            </div>
+
+            <div class="category-section-header">
+                <h2>Category Breakdown</h2>
+                <button class="create-btn" id="create-btn">+ Create New Budget</button>
+            </div>
+
+            <div class="category-grid" id="category-grid"></div>
+
+        </div>
+    </div>
+</div>
+
+<div class="mobile-bottom-nav">
+    <a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a>
+    <a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a>
+    <a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a>
+    <a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI</span></a>
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+        <h2>Set Category Budget</h2>
+        <div class="modal-field">
+            <label>CATEGORY</label>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;" id="modal-cat-grid">
+                <div class="modal-cat-btn selected" data-cat="housing" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border-radius:10px;border:1.5px solid #000666;background:#E0E0FF;cursor:pointer;font-size:10px;font-weight:700;color:#000666;letter-spacing:1px;min-width:70px;">
+                    <img src="/images/rent.png" width="16" height="22" onerror="this.style.display='none'"><span>Housing</span>
+                </div>
+                <div class="modal-cat-btn" data-cat="groceries" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2E2E2;background:#F9F9F9;cursor:pointer;font-size:10px;font-weight:700;color:#454652;letter-spacing:1px;min-width:70px;">
+                    <img src="/images/groceries.png" width="17" height="22" onerror="this.style.display='none'"><span>Groceries</span>
+                </div>
+                <div class="modal-cat-btn" data-cat="transport" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2E2E2;background:#F9F9F9;cursor:pointer;font-size:10px;font-weight:700;color:#454652;letter-spacing:1px;min-width:70px;">
+                    <img src="/images/transport.png" width="17" height="22" onerror="this.style.display='none'"><span>Transport</span>
+                </div>
+                <div class="modal-cat-btn" data-cat="food" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2E2E2;background:#F9F9F9;cursor:pointer;font-size:10px;font-weight:700;color:#454652;letter-spacing:1px;min-width:70px;">
+                    <img src="/images/food-logo.png" width="17" height="22" onerror="this.style.display='none'"><span>Food</span>
+                </div>
+                <div class="modal-cat-btn" data-cat="shopping" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2E2E2;background:#F9F9F9;cursor:pointer;font-size:10px;font-weight:700;color:#454652;letter-spacing:1px;min-width:70px;">
+                    <img src="/images/shopping.png" width="17" height="22" onerror="this.style.display='none'"><span>Shopping</span>
+                </div>
+                <div class="modal-cat-btn" data-cat="health" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2E2E2;background:#F9F9F9;cursor:pointer;font-size:10px;font-weight:700;color:#454652;letter-spacing:1px;min-width:70px;">
+                    <img src="/images/health.png" width="17" height="22" onerror="this.style.display='none'"><span>Health</span>
+                </div>
+                <div class="modal-cat-btn" data-cat="others" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border-radius:10px;border:1.5px solid #E2E2E2;background:#F9F9F9;cursor:pointer;font-size:10px;font-weight:700;color:#454652;letter-spacing:1px;min-width:70px;">
+                    <img src="/images/shopping.png" width="17" height="22" onerror="this.style.display='none'"><span>Others</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-field">
+            <label>MONTHLY BUDGET LIMIT</label>
+            <input type="number" id="modal-amount" placeholder="0.00">
+        </div>
+        <div class="modal-actions">
+            <button class="modal-cancel" id="modal-cancel-btn">Cancel</button>
+            <button class="modal-save" id="modal-save-btn">Save Budget</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import { supabase } from '/js/supabase.js'
+
+const savedPrefs = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}');
+let symCache = savedPrefs.currency?.symbol || '₦';
+
+document.getElementById('total-allocated').textContent  = symCache + '0.00';
+document.getElementById('progress-sub').textContent     = symCache + '0.00 SPENT OF YOUR TOTAL LIMIT';
+document.getElementById('remaining-value').textContent  = symCache + '0.00';
+document.getElementById('sidebar-balance').textContent  = symCache + '0.00';
+
+function fmt(n) {
+    return symCache + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
+async function getUser() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { window.location.href = '/pages/login.html'; return null }
+    return user
+}
+
+async function loadSymbol(userId) {
+    const { data } = await supabase.from('profiles').select('currency_symbol').eq('id', userId).maybeSingle()
+    if (data?.currency_symbol) { symCache = data.currency_symbol; return }
+    const prefs = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}')
+    symCache = prefs.currency?.symbol || '₦'
+}
+
+const CAT_CONFIG = {
+    housing:   { label: 'Housing & Bills', icon: '<img src="/images/rent.png" width="17" height="22">',      bg: '#E0E0FF' },
+    groceries: { label: 'Groceries',       icon: '<img src="/images/groceries.png" width="17" height="22">', bg: '#DCFCE7' },
+    transport: { label: 'Transport',       icon: '<img src="/images/transport.png" width="17" height="22">', bg: '#E8F5E9' },
+    food:      { label: 'Food',            icon: '<img src="/images/food-logo.png" width="17" height="22">', bg: '#FFF3E0' },
+    shopping:  { label: 'Shopping',        icon: '<img src="/images/shopping.png" width="17" height="22">',  bg: '#FCE4EC' },
+    health:    { label: 'Health',          icon: '<img src="/images/health.png" width="17" height="22">',    bg: '#E0F7FA' },
+    rent:      { label: 'Rent',            icon: '<img src="/images/rent.png" width="17" height="22">',      bg: '#EDE7F6' },
+    others:    { label: 'Others',          icon: '<img src="/images/shopping.png" width="17" height="22">',  bg: '#F5F5F5' },
+}
+
+let userCache        = null
+let budgets          = {}
+let spending         = {}
+let selectedModalCat = 'housing'
+
+async function fetchBudgets(userId) {
+    const { data, error } = await supabase.from('budgets').select('*').eq('user_id', userId)
+    if (error) { console.error(error); return {} }
+    const map = {}
+    data.forEach(b => map[b.category] = Number(b.limit_amount))
+    return map
+}
+
+async function fetchSpending(userId) {
+    const thisMonth = new Date().toISOString().slice(0, 7)
+    const { data, error } = await supabase
+        .from('transactions')
+        .select('category, amount')
+        .eq('user_id', userId)
+        .eq('type', 'expense')
+        .gte('date', `${thisMonth}-01`)
+        .lte('date', `${thisMonth}-31`)
+    if (error) { console.error('spending error:', error); return {} }
+    const map = {}
+    data.forEach(t => { map[t.category] = (map[t.category] || 0) + Number(t.amount) })
+    return map
+}
+
+function render() {
+    const totalAllocated = Object.values(budgets).reduce((a, b) => a + b, 0)
+    const totalSpent     = Object.keys(budgets).reduce((a, cat) => a + (spending[cat] || 0), 0)
+    const remaining      = totalAllocated - totalSpent
+    const pct            = totalAllocated > 0 ? Math.min((totalSpent / totalAllocated) * 100, 100) : 0
+    const isOver         = totalSpent > totalAllocated
+
+    document.getElementById('total-allocated').textContent = fmt(totalAllocated)
+    document.getElementById('progress-pct').textContent    = `${Math.round(pct)}% Utilized`
+    document.getElementById('progress-sub').textContent    = `${fmt(totalSpent)} SPENT OF YOUR TOTAL LIMIT`
+    document.getElementById('remaining-value').textContent = fmt(Math.abs(remaining))
+    document.getElementById('sidebar-balance').textContent = fmt(remaining)
+
+    const bar = document.getElementById('summary-bar')
+    bar.style.width = pct + '%'
+    bar.className   = 'progress-bar-fill' + (isOver ? ' over' : '')
+
+    const remLabel = document.getElementById('remaining-label')
+    const remVal   = document.getElementById('remaining-value')
+    remLabel.className   = 'label' + (isOver ? ' over' : '')
+    remVal.className     = 'value' + (isOver ? ' over' : '')
+    remLabel.textContent = isOver ? 'OVER BUDGET' : 'REMAINING BALANCE'
+
+    const grid  = document.getElementById('category-grid')
+    const cards = Object.entries(budgets).map(([cat, limit]) => {
+        const spent      = spending[cat] || 0
+        const catPct     = limit > 0 ? Math.min((spent / limit) * 100, 100) : 0
+        const over       = spent > limit
+        const warn       = !over && catPct >= 80
+        const cfg        = CAT_CONFIG[cat] || { label: cat, icon: '', bg: '#F5F5F5' }
+        const avail      = limit - spent
+        const statusText  = over ? `OVERSPENT BY ${fmt(spent - limit)}` : `${fmt(avail)} AVAILABLE`
+        const statusClass = over ? 'over' : warn ? 'warn' : 'safe'
+        const barClass    = over ? 'over' : warn ? 'warn' : ''
+        const spentClass  = over ? 'over' : 'safe'
+
+        return `
+        <div class="cat-card">
+            <div class="cat-card-top">
+                <div class="cat-card-left">
+                    <div class="cat-icon-wrap" style="background:${cfg.bg}">${cfg.icon}</div>
+                    <div>
+                        <div class="cat-name">${cfg.label}</div>
+                        <div class="cat-status ${statusClass}">${statusText}</div>
+                    </div>
+                </div>
+                <button class="cat-edit-btn" data-cat="${cat}" title="Remove budget">✕</button>
+            </div>
+            <div class="cat-amounts">
+                <span class="cat-spent ${spentClass}">Spent: ${fmt(spent)}</span>
+                <span class="cat-budget">Budget: ${fmt(limit)}</span>
+            </div>
+            <div class="cat-bar-wrap">
+                <div class="cat-bar-fill ${barClass}" style="width:${catPct}%"></div>
+            </div>
+        </div>`
+    }).join('')
+
+    grid.innerHTML = cards + `
+        <div class="cat-card add-new" id="add-new-card">
+            <div class="plus-icon">+</div>
+            <h3>Set New Category Budget</h3>
+            <p>Optimize your monthly flow</p>
+        </div>`
+
+    grid.querySelectorAll('.cat-edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => deleteBudget(btn.dataset.cat))
+    })
+    document.getElementById('add-new-card').addEventListener('click', openModal)
+}
+
+function openModal() {
+    document.getElementById('modal-overlay').classList.add('open')
+    document.getElementById('modal-amount').value = ''
+    selectedModalCat = 'housing'
+    document.querySelectorAll('.modal-cat-btn').forEach(b => {
+        b.style.borderColor = '#E2E2E2'
+        b.style.background  = '#F9F9F9'
+        b.style.color       = '#454652'
+    })
+    const first = document.querySelector('.modal-cat-btn[data-cat="housing"]')
+    if (first) {
+        first.style.borderColor = '#000666'
+        first.style.background  = '#E0E0FF'
+        first.style.color       = '#000666'
+    }
+}
+
+function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open')
+}
+
+document.querySelectorAll('.modal-cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.modal-cat-btn').forEach(b => {
+            b.style.borderColor = '#E2E2E2'
+            b.style.background  = '#F9F9F9'
+            b.style.color       = '#454652'
+        })
+        btn.style.borderColor = '#000666'
+        btn.style.background  = '#E0E0FF'
+        btn.style.color       = '#000666'
+        selectedModalCat      = btn.dataset.cat
+    })
+})
+
+document.getElementById('modal-save-btn').addEventListener('click', async () => {
+    const category = selectedModalCat
+    const limit    = parseFloat(document.getElementById('modal-amount').value)
+    if (!limit || limit <= 0) { alert('Please enter a valid amount.'); return }
+
+    closeModal()
+    budgets[category] = limit
+    render()
+
+    const { error } = await supabase.from('budgets').upsert({
+        user_id: userCache.id,
+        category,
+        limit_amount: limit,
+        updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,category' })
+
+    if (error) {
+        delete budgets[category]
+        render()
+        alert('Failed to save: ' + error.message)
+    }
+})
+
+document.getElementById('modal-cancel-btn').addEventListener('click', closeModal)
+document.getElementById('create-btn').addEventListener('click', openModal)
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal()
+})
+
+async function deleteBudget(category) {
+    if (!confirm(`Remove budget for ${CAT_CONFIG[category]?.label || category}?`)) return
+
+    const backup = budgets[category]
+    delete budgets[category]
+    render()
+
+    const { error } = await supabase.from('budgets')
+        .delete().eq('user_id', userCache.id).eq('category', category)
+
+    if (error) {
+        budgets[category] = backup
+        render()
+        alert('Failed to remove: ' + error.message)
+    }
+}
+
+document.getElementById('logout-btn').addEventListener('click', async () => {
+    await supabase.auth.signOut()
+    window.location.href = '/pages/login.html'
+})
+
+document.querySelectorAll('.side-navs div a').forEach(link => {
+    if (link.href === window.location.href) link.classList.add('active')
+})
+
+async function boot() {
+    userCache = await getUser(); if (!userCache) return
+    await loadSymbol(userCache.id)
+    ;[budgets, spending] = await Promise.all([
+        fetchBudgets(userCache.id),
+        fetchSpending(userCache.id)
+    ])
+    render()
+}
+
+boot()
+</script>
+</body>
+</html>

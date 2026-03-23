@@ -1,0 +1,436 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+}
+
+.navbar-brand {
+    display: flex;
+    margin: 0 25px;
+    align-items: center;
+    color: #000666;
+    height: 45px;
+    gap: 6px;
+    padding: 10px;
+}
+
+.brand-name {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: -1.5px;
+    color: #000666;
+    text-decoration: none;
+}
+
+.btn-login {
+    background-color: #000666;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    padding: 8px 10px;
+    margin-right: 35px;
+    display: inline-block;
+}
+
+.hero-section {
+    background-color: #F3F3F3;
+    padding: 35px 35px 35px 35px;
+}
+
+.hero-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 90px;
+}
+
+.hero-text {
+    display: inline-block;
+    text-align: left;
+}
+
+.hero-tag {
+    color: #1B6D24;
+    letter-spacing: 1px;
+    font-size: 12px;
+    font-family: "inter", sans-serif;
+}
+
+.landing-header {
+    color: #000666;
+    font-size: 55px;
+    line-height: 70px;
+    font-weight: 800;
+}
+
+.hero-subtext {
+    color: #454652;
+    width: 79%;
+    line-height: 28px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 35px;
+}
+
+.btn-primary {
+    background-color: #000666;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    padding: 13.5px 40px 14.5px 40px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: gainsboro;
+    color: #1A237E;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    padding: 13.5px 40px 14.5px 40px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.hero-social-proof {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 8px;
+}
+
+.profiles-img {
+    width: 85px;
+    height: 35px;
+}
+
+.social-proof-text {
+    font-size: 14px;
+    color: #454652;
+    margin: 0;
+}
+
+.highlight {
+    color: #000666;
+}
+
+.landing-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.card-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.card-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+}
+
+.balance-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 40px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.balance-label {
+    color: #454652;
+    margin: 4px 0;
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-family: "inter", sans-serif;
+}
+
+.balance-amount {
+    color: #000666;
+    letter-spacing: -1.2px;
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.savings-goal-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.savings-label {
+    color: #454652;
+}
+
+.savings-percent {
+    color: #1B6D24;
+}
+
+.feature-cards {
+    display: flex;
+    gap: 20px;
+}
+
+.feature-card {
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+
+}
+
+.feature-card--dark {
+    background-color: #000666;
+    color: white;
+}
+
+.feature-card--light {
+    background-color: gainsboro;
+}
+
+.feature-icon {
+    height: 70px;
+}
+
+.feature-title {
+    margin-bottom: 0;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+}
+
+.feature-desc {
+    margin: 0;
+    font-size: 12px;
+    color: white;
+}
+
+.feature-title--dark {
+    color: #000666;
+}
+
+.feature-text, .hero-subtext, .feature-item, .social-proof-text {
+    font-family: "inter", sans-serif;
+}
+
+.feature-desc--dark {
+    color: #454652;
+}
+
+.features-section {
+    background-color: #e8e8e8;
+    padding: 70px 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.features-heading {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;
+    color: #000666;
+    font-family: "inter", sans-serif;
+}
+
+.landing-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 22px;
+}
+
+.feature-icon-box {
+    border-radius: 12px;
+    background-color: #E0E0FF;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-item-title {
+    color: #000666;
+}
+
+.feature-item-desc {
+    color: #454652;
+    line-height: 23px;
+}
+
+.signup-info-container {
+    padding: 80px 40px 150px 40px;
+    font-family: "inter", sans-serif;
+}
+
+.signup-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background-color: #1A237E;
+    color: white;
+    text-align: center;
+    border-radius: 24px;
+}
+
+.signup-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-heading {
+    font-weight: 800;
+    font-size: 28px;
+    margin: 0;
+}
+
+.signup-subtext {
+    width: 70%;
+    line-height: 23px;
+}
+
+.btn-signup {
+    background-color: #1B6D24;
+    color: white;
+    border-radius: 8px;
+    padding: 12px 15px;
+    width: 200px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-signup-link {
+    text-decoration: none;
+    color: white;
+}
+
+.signup-footnote {
+    margin-bottom: 0;
+}
+
+footer {
+    border-top: 1px solid #e0e0e0;
+    padding: 13px 30px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    color: #000666;
+    height: 45px;
+    gap: 10px;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+
+    .btn-login {
+        margin-right: 15px;
+    }
+
+    .hero-section {
+        padding: 10px 17px 25px 17px;
+    }
+
+    .hero-inner {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .landing-header {
+        font-size: 32px;
+        line-height: 42px;
+    }
+
+    .hero-subtext {
+        width: 100%;
+    }
+
+    .hero-buttons {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .navbar-container {
+      padding: 7px 0;
+    }
+    .navbar-brand {
+      margin: 0;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 12px 24px;
+        font-size: 14px;
+        justify-content: center;
+        text-align: center;
+        flex: 1;
+    }
+
+    .landing-card {
+        display: none;
+    }
+
+    .features-section {
+        padding: 40px 17px;
+    }
+
+    .landing-info {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .signup-info-container {
+        padding: 40px 17px;
+    }
+
+    .signup-info {
+        padding: 30px 17px;
+        border-radius: 16px;
+    }
+
+    .signup-heading {
+        font-size: 22px;
+    }
+
+    .signup-subtext {
+        width: 100%;
+    }
+
+    footer {
+        padding: 5px 17px;
+    }
+}

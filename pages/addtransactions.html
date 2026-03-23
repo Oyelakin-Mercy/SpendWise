@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaction – SpendWise</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <style>
+        .add-transaction-main {
+            padding: 40px 48px;
+            background-color: #F3F3F3;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .cancel-link {
+            font-size: 14px;
+            color: #454652;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .cancel-link:hover { color: #444444; }
+
+        .add-transaction-main h1 {
+            font-size: 40px;
+            font-weight: 900;
+            color: #000767;
+            letter-spacing: -2px;
+            margin: 0;
+        }
+
+        .green-line {
+            width: 48px;
+            height: 3px;
+            background-color: #1B6D24;
+            border-radius: 2px;
+            margin-top: 8px;
+        }
+
+        .transaction-body {
+            display: flex;
+            gap: 32px;
+        }
+
+        .transaction-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .transaction-right {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #eaeaea;
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #454652;
+            margin-bottom: 12px;
+        }
+
+        .type-toggle {
+            display: flex;
+            background-color: #E8E8E8;
+            border-radius: 8px;
+            padding: 4px;
+            width: fit-content;
+            gap: 4px;
+        }
+
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+
+        .type-btn {
+            padding: 10px 28px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: #454652;
+            transition: all 0.2s;
+        }
+
+        .type-btn.active-expense {
+            background-color: #000666;
+            color: white;
+        }
+
+        .type-btn.active-income {
+            background-color: #1B6D24;
+            color: white;
+        }
+
+        .amount-field {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1.5px solid #E2E2E2;
+            padding-bottom: 12px;
+        }
+
+        .amount-field:focus-within {
+            border-bottom-color: #cfcfcf;
+        }
+
+        .currency-symbol {
+            font-size: 22px;
+            font-weight: 700;
+            color: #000767;
+        }
+
+        #amount-input {
+            border: none;
+            background: transparent;
+            font-size: 36px;
+            font-weight: 900;
+            color: #C0C0C0;
+            outline: none;
+            width: 100%;
+            font-family: "Inter", sans-serif;
+        }
+
+        #amount-input:focus { color: #000767; }
+
+
+        .category-grid {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .cat-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 16px;
+            border: none;
+            width: 100px;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #454652;
+            transition: all 0.2s;
+        }
+
+        .cat-btn:hover {
+            border-color: #000666;
+            color: #000666;
+        }
+
+        .cat-btn.selected {
+            border: 2px solid #000666;
+            background-color: #E0E0FF;
+            color: #000666;
+        }
+
+        ::placeholder {
+            color: #C0C0C0;
+            opacity: 1;
+        }
+
+        .cat-icon { font-size: 20px; color: #1A1C1C; }
+
+        .right-card {
+            border-radius: 12px;
+        }
+
+        #date-input {
+            width: 100%;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-family: "Inter", sans-serif;
+            color: #1A1C1C;
+            outline: none;
+            margin-top: 8px;
+            background-color: #F3F3F3;
+        }
+
+        #note-input {
+            width: 100%;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-family: "Inter", sans-serif;
+            color: #454652;
+            outline: none;
+            resize: none;
+            height: 90px;
+            margin-top: 8px;
+            background-color: #F3F3F3;
+        }
+
+        #date-input:focus, #note-input:focus {
+            border-color: #e8e8e8;
+        }
+
+        .ai-insight {
+            background-color: #A0F399;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .ai-dot {
+            width: 28px;
+            height: 28px;
+            background-color: #1B6D24;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 12px;
+            color: white;
+        }
+
+        .ai-insight-text .ai-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #217128;
+            margin-bottom: 4px;
+        }
+
+        .ai-insight-text p {
+            font-size: 12px;
+            color: #454652;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        #save-btn {
+            background-color: #000666;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 18px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        #save-btn:hover { background-color: #1A237E; }
+
+        #add-transaction-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 56px;
+            height: 56px;
+            border-radius: 100%;
+            background-color: #000666;
+            color: white;
+            font-size: 28px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #add-transaction-btn:hover { background-color: #1A237E; }
+
+
+        @media (max-width: 768px) {
+
+            .add-transaction-main {
+                padding: 20px 16px 90px 16px;
+                gap: 20px;
+            }
+
+            .add-transaction-main h1 {
+                font-size: 28px;
+                letter-spacing: -1px;
+            }
+
+            .transaction-body {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .transaction-right {
+                width: 100%;
+            }
+
+            .type-toggle {
+                width: 100%;
+            }
+
+            .type-btn {
+                flex: 1;
+                text-align: center;
+            }
+
+            #amount-input {
+                font-size: 28px;
+            }
+
+            .cat-btn {
+                width: calc(25% - 9px);
+                padding: 12px 8px;
+                font-size: 9px;
+            }
+             aside > div:last-child {
+        display: none !important;
+    }
+        }
+    </style>
+</head>
+<body>
+    <div class="history-container">
+        <aside>
+            <div style="display: flex; align-items: center; color: #000666; height: 45px; gap: 10px; padding: 10px;">
+                <img src="/images/logospend.png" alt="" width="28.5px" height="27px">
+                <a style="font-size: 20px; font-weight: bold; letter-spacing: -1.5px;">SpendWise</a>
+            </div>
+            <div class="side-navs">
+                <div><a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a></div>
+                <div><a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a></div>
+                <div><a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a></div>
+                <div><a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI Assistant</span></a></div>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%;">
+                <button id="logout-btn" style="background: none; border: 1px solid #E0E0E0; border-radius: 8px; padding: 10px; cursor: pointer; color: #454652; font-size: 13px; font-weight: 600; margin-bottom: 10px; width: 100%;">Sign Out</button>
+                <div style="color: white; border-radius: 8px; background-color: #1A237E; padding: 10px; height: 70px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+                    <div style="font-size: 12px; line-height: 20px;">CURRENT BALANCE</div>
+                    <div style="font-size: 23px;" id="sidebar-balance">0.00</div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-container">
+            <div class="add-transaction-main">
+                <a href="/pages/dashboard.html" class="cancel-link"> <img src="/images/right-arrow.png" alt="" height="8px" width="10px"> Cancel and return</a>
+
+                <div>
+                    <h1>Add Transaction</h1>
+                    <div class="green-line"></div>
+                </div>
+
+                <div class="transaction-body">
+                    <!-- LEFT -->
+                    <div class="transaction-left">
+
+                        <div>
+                            <div class="field-label">TRANSACTION TYPE</div>
+                            <div class="type-toggle">
+                                <button class="type-btn active-expense" id="btn-expense">Expense</button>
+                                <button class="type-btn" id="btn-income">Income</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="field-label">AMOUNT (NGN)</div>
+                            <div class="amount-field">
+                                <span class="currency-symbol" id="currency-symbol">₦</span>
+                                <input type="number" id="amount-input" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="field-label">SELECT CATEGORY</div>
+                            <div class="category-grid">
+                                <button class="cat-btn" data-cat="transport">
+                                    <span class="cat-icon"><img src="/images/transport.png" alt=""></span>TRANSPORT
+                                </button>
+                                <button class="cat-btn" data-cat="food">
+                                    <span class="cat-icon"><img src="/images/food-logo.png" alt=""></span>FOOD
+                                </button>
+                                <button class="cat-btn" data-cat="housing">
+                                    <span class="cat-icon"><img src="/images/rent.png" alt=""></span>HOUSING
+                                </button>
+                                <button class="cat-btn" data-cat="shopping">
+                                    <span class="cat-icon"><img src="/images/shopping.png" alt=""></span>SHOPPING
+                                </button>
+                                <button class="cat-btn" data-cat="health">
+                                    <span class="cat-icon"><img src="/images/health.png" alt=""></span>HEALTH
+                                </button>
+                                <button class="cat-btn" data-cat="groceries">
+                                    <span class="cat-icon"><img src="/images/groceries.png" alt=""></span>GROCERIES
+                                </button>
+                                <button class="cat-btn" data-cat="others">
+                                    <span class="cat-icon">···</span>OTHERS
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="transaction-right">
+                        <div class="right-card">
+                            <div class="field-label">TRANSACTION DATE</div>
+                            <input type="date" id="date-input">
+                        </div>
+
+                        <div class="right-card">
+                            <div class="field-label">ADD NOTE (OPTIONAL)</div>
+                            <textarea id="note-input" placeholder="What was this for?"></textarea>
+                        </div>
+
+                        <div class="ai-insight">
+                            <img src="/images/human.png" alt="">
+                            <div class="ai-insight-text">
+                                <div class="ai-title">AI INSIGHT</div>
+                                <p id="ai-insight-text">Enter an amount and category to see your spending insight.</p>
+                            </div>
+                        </div>
+
+                        <button id="save-btn">SAVE TRANSACTION</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mobile-bottom-nav">
+    <a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a>
+    <a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a>
+    <a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a>
+    <a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI</span></a>
+</div>
+   <script type="module" src="/js/add-transactions.js"></script>
+</body>
+</html>

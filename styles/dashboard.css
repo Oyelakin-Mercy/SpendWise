@@ -1,0 +1,276 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: "Inter", sans-serif;
+}
+
+.side-navs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.side-navs div {
+    padding: 0 10px;
+}
+
+.side-navs div:hover {
+    background-color: #E0E0FF;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.side-navs a {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    gap: 16px;
+    text-decoration: none;
+    color: #454652;
+}
+
+.main-container {
+    width: 100%;
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.main-history {
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+    background-color: white;
+    min-height: calc(100vh - 65px);
+}
+
+.history-container {
+    display: flex;
+    height: 100vh;
+}
+
+.history-title div {
+    font-size: 40px;
+    color: #000767;
+    font-weight: 900;
+    letter-spacing: -2.48px;
+}
+
+.history-title p {
+    margin: 6px 0 0 0;
+}
+
+.history-filters {
+    background-color: #F3F3F3;
+    padding: 0 28px;
+    cursor: pointer;
+    height: 150px;
+}
+
+#legend-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.legend-row:last-child {
+    border-bottom: none;
+}
+
+.legend-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+.legend-dot {
+    border-radius: 100%;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.legend-amount {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+#add-transaction-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 56px;
+    height: 56px;
+    border-radius: 100%;
+    background-color: #000666;
+    color: white;
+    font-size: 28px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#add-transaction-btn:hover {
+    background-color: #1A237E;
+}
+
+.amount {
+    font-size: 20px;
+    font-weight: 900;
+    margin: 16px 0;
+    color: #1A1C1C;
+}
+
+nav {
+    padding: 20px;
+    border-bottom: 1px solid #E2E2E2;
+}
+
+aside {
+    width: 250px;
+    background-color: #EEEEEE;
+    height: 100vh;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.side-navs div:has(a.active) {
+    background-color: white;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .history-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    aside {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        gap: 0;
+    }
+
+    .side-navs,
+    aside > div:last-child {
+        display: none;
+    }
+
+    .main-container {
+        height: auto;
+        overflow-y: unset;
+    }
+
+    .main-history {
+        padding: 20px 16px;
+        min-height: unset;
+        gap: 16px;
+        padding-bottom: 90px;
+    }
+
+    .history-title div {
+        font-size: 28px;
+        letter-spacing: -1px;
+    }
+
+    .income-expense-row {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .history-filters {
+        height: auto !important;
+        padding: 16px !important;
+    }
+
+    .clear-btns-row {
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+    }
+
+    .analysis-row {
+        flex-direction: column !important;
+    }
+
+    .spending-analysis-block {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .chart-legend-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+    }
+
+    #dashboard-ai-card {
+        width: 100% !important;
+        margin-top: 8px !important;
+    }
+
+    #add-transaction-btn {
+        bottom: 72px;
+        right: 20px;
+    }
+
+    .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #EEEEEE;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0 16px 0;
+        border-top: 1px solid #E2E2E2;
+        z-index: 100;
+    }
+
+    .mobile-bottom-nav a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: #454652;
+        font-size: 10px;
+    }
+
+    .mobile-bottom-nav img {
+        width: 22px;
+        height: 22px;
+    }
+     aside > div:last-child {
+        display: none !important;
+    }
+}

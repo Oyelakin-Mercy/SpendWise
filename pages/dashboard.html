@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+    <script>
+        const p = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}');
+        const s = p.currency?.symbol || '$';
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-currency]').forEach(el => {
+                el.textContent = s + '0.00';
+            });
+        });
+    </script>
+<body>
+    <div class="history-container">
+        <aside>
+            <div style="display: flex; align-items: center; color: #000666; height: 45px; gap: 10px; padding: 10px;">
+                <img src="/images/logospend.png" alt="" width="28.5px" height="27px">
+                <a style="font-size: 20px; font-weight: bold; letter-spacing: -1.5px;">SpendWise</a>
+            </div>
+            <div class="side-navs">
+                <div><a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a></div>
+                <div><a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a></div>
+                <div><a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a></div>
+                <div><a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI Assistant</span></a></div>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%;">
+                <button id="logout-btn" style="background: none; border: 1px solid #E0E0E0; border-radius: 8px; padding: 10px; cursor: pointer; color: #454652; font-size: 13px; font-weight: 600; margin-bottom: 10px; width: 100%;">Sign Out</button>
+
+                <div>
+                    <div style="color: white; border-radius: 8px; background-color: #1A237E; padding: 10px; height: 70px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 12px; line-height: 20px;">CURRENT BALANCE</div>
+                        <div style="font-size: 20px;" id="sidebar-balance" data-currency></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-container">
+            <div class="main-history">
+
+                <div class="history-title">
+                    <p style="font-size: 14px; letter-spacing: 2px; margin: 0;">TOTAL LIQUIDITY</p>
+                    <div data-currency></div>
+                </div>
+
+                <div style="display: flex; gap: 16px; font-size: 14px;" class="income-expense-row">
+                    <div style="flex: 1; display: flex; justify-content: center; flex-direction: column;" class="history-filters">
+                        <div style="color: #1B6D24; display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; letter-spacing: 1px;">
+                            <div>MONTHLY INCOME</div>
+                            <img src="/images/down.png" alt="" width="10px" height="11px">
+                        </div>
+                        <div class="amount" data-currency></div>
+                        <div style="color: #454652; font-size: 14px;">+12% from last month</div>
+                    </div>
+                    <div style="flex: 1; display: flex; justify-content: center; flex-direction: column;" class="history-filters">
+                        <div style="color: #BA1A1A; display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; letter-spacing: 1px;">
+                            <div>MONTHLY EXPENSES</div>
+                            <img src="/images/up.png" alt="" width="10px" height="11px">
+                        </div>
+                        <div class="amount" data-currency></div>
+                        <div style="color: #454652; font-size: 14px;">+12% from last month</div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 12px;" class="clear-btns-row"">
+                    <button id="clear-income-btn" style="background: none; border: 1px solid #1B6D24; color: #1B6D24; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+                        cursor: pointer; letter-spacing: 0.5px">Clear Income</button>
+                    <button id="clear-expense-btn" style=" background: none; border: 1px solid #BA1A1A; color: #BA1A1A; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+                        cursor: pointer; letter-spacing: 0.5px">Clear Expenses</button></div>
+            <div style="display: flex; justify-content: space-between;" class="analysis-row">
+            <div style="  padding: 0 24px; width: 600px;" class="spending-analysis-block">
+                    <div style="font-weight: bold; margin-bottom: 24px; font-size: 15px;">Spending Analysis</div>
+                    <div style="display: flex; align-items: center; gap: 40px;" class="chart-legend-row">
+
+                        <div style="width: 180px; height: 180px; flex-shrink: 0;">
+                            <canvas id="spending-chart"></canvas>
+                        </div>
+
+                        <div id="legend-container">
+                            <div class="legend-row" data-cat-row="housing">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #000666;"></div>
+                                    <div>Housing &amp; Bills</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="housing" data-currency></div>
+                            </div>
+                            <div class="legend-row" data-cat-row="groceries">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #1B6D24;"></div>
+                                    <div>Groceries</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="groceries" data-currency></div>
+                            </div>
+                            <div class="legend-row" data-cat-row="transport">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #C6C5D4;"></div>
+                                    <div>Transport</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="transport" data-currency></div>
+                            </div>
+                            <div class="legend-row" data-cat-row="food">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #FFB59D;"></div>
+                                    <div>Food</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="food" data-currency></div>
+                            </div>
+                            <div class="legend-row" data-cat-row="shopping">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #7986CB;"></div>
+                                    <div>Shopping</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="shopping" data-currency></div>
+                            </div>
+                            <div class="legend-row" data-cat-row="health" style="display: none;">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #4DB6AC;"></div>
+                                    <div>Health</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="health" data-currency></div>
+                            </div>
+                            <div class="legend-row" data-cat-row="rent" style="display: none;">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #FFD54F;"></div>
+                                    <div>Rent</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="rent" data-currency></div>
+                            </div>
+                            <div class="legend-row" data-cat-row="others" style="display: none;">
+                                <div class="legend-label">
+                                    <div class="legend-dot" style="background-color: #E0E0E0;"></div>
+                                    <div>Others</div>
+                                </div>
+                                <div class="legend-amount" data-cat-display="others" data-currency></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div id="dashboard-ai-card" style="
+        width: 240px; flex-shrink: 0;
+        background: #A0F399; border-radius: 16px;
+        padding: 20px; display: flex; flex-direction: column;
+        gap: 12px; margin-top: 24px; align-self: flex-start;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 9px; font-weight: 700; letter-spacing: 2px;
+                background: #DCFCE7; color: #217128; padding: 4px 10px;
+                border-radius: 20px;">AI INSIGHT</span>
+            <span style="font-size: 10px; color: #454652; font-weight: 600;">LIVE</span>
+        </div>
+        <div style="width: 40px; height: 40px; background: #DCFCE7; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;"><img src="/images/increase.png" alt=""></div>
+        <div id="ai-card-title" style="font-weight: 700; color: #217128; font-size: 14px;">
+            Analysing your spending…
+        </div>
+        <div id="ai-card-body" style="font-size: 12px; color: #454652; line-height: 1.6;">
+            Loading your financial insight.
+        </div>
+        <a href="/pages/ai-insights.html" style="font-size: 11px; font-weight: 700;
+            background: #217128; color: white; border-radius: 8px;
+            padding: 8px 14px; text-decoration: none; text-align: center; margin-top: 4px;">
+            Read Full Analysis
+        </a>
+    </div>
+    </div>
+
+            </div>
+            <button id="add-transaction-btn">+</button>
+        </div>
+    </div>
+        <div class="mobile-bottom-nav">
+    <a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a>
+    <a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a>
+    <a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a>
+    <a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI</span></a>
+</div>
+    <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>
