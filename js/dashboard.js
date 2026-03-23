@@ -1,7 +1,7 @@
 import { supabase } from './supabase.js';
 
 const savedPrefs = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}');
-let sym = savedPrefs.currency?.symbol || '₦';
+let sym = savedPrefs.currency?.symbol || '$';
 
 const CATEGORIES = [
     { key: 'housing',   label: 'Housing & Bills', color: '#000666' },

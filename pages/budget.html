@@ -478,7 +478,7 @@
 import { supabase } from '/js/supabase.js'
 
 const savedPrefs = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}');
-let symCache = savedPrefs.currency?.symbol || '₦';
+let symCache = savedPrefs.currency?.symbol || '$';
 
 document.getElementById('total-allocated').textContent  = symCache + '0.00';
 document.getElementById('progress-sub').textContent     = symCache + '0.00 SPENT OF YOUR TOTAL LIMIT';
@@ -499,7 +499,7 @@ async function loadSymbol(userId) {
     const { data } = await supabase.from('profiles').select('currency_symbol').eq('id', userId).maybeSingle()
     if (data?.currency_symbol) { symCache = data.currency_symbol; return }
     const prefs = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}')
-    symCache = prefs.currency?.symbol || '₦'
+    symCache = prefs.currency?.symbol || '$'
 }
 
 const CAT_CONFIG = {

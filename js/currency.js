@@ -1,9 +1,9 @@
 import { supabase } from './supabase.js';
 
 const buttons = document.querySelectorAll('.currency-button, .secondary-btn');
-let selectedSymbol = '₦';
-let selectedCode   = 'NGN';
-let selectedLabel  = 'Nigerian Naira (₦)';
+let selectedSymbol = '$';
+let selectedCode   = 'USD';
+let selectedLabel  = 'US Dollar ($)';
 
 buttons.forEach(btn => {
     btn.addEventListener('click', () => {

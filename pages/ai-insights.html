@@ -295,7 +295,7 @@ import { supabase } from '/js/supabase.js'
 
 const EDGE_FN_URL = 'https://rnglffmqnchmibqixcoq.supabase.co/functions/v1/claude-proxy'
 
-function fmt(n, sym = '₦') {
+function fmt(n, sym = '$') {
     return sym + Number(n).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
@@ -309,7 +309,7 @@ async function getSymbol(userId) {
     const { data } = await supabase.from('profiles').select('currency_symbol').eq('id', userId).maybeSingle()
     if (data?.currency_symbol) return data.currency_symbol
     const prefs = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}')
-    return prefs.currency?.symbol || '₦'
+    return prefs.currency?.symbol || '$'
 }
 
 async function fetchTransactions(userId) {
@@ -448,7 +448,7 @@ window.vote = function(btn) {
     btn.classList.add('voted')
 }
 
-let txCache = [], symCache = '₦'
+let txCache = [], symCache = '$'
 
 window.runAgent = async function() {
     const btn = document.getElementById('refresh-btn')

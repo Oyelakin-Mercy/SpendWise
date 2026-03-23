@@ -2,7 +2,7 @@ import { supabase } from './supabase.js';
 
 function getSymbol() {
     const data = JSON.parse(localStorage.getItem('spendwise_prefs') || '{}');
-    return data.currency || { symbol: '₦', code: 'NGN' };
+    return data.currency || { symbol: '$', code: 'USD' };
 }
 
 function formatCurrency(n) {
