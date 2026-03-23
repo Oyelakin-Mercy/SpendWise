@@ -340,9 +340,26 @@
                 padding: 12px 8px;
                 font-size: 9px;
             }
-             aside > div:last-child {
-        display: none !important;
-    }
+
+            .current-balance {
+                display: none !important;
+            }
+            #logout-btn {
+                margin-bottom: 0 !important;
+            }
+            .mobile-bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: #EEEEEE;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding: 10px 0 16px 0;
+                border-top: 1px solid #E2E2E2;
+                z-index: 100;
+            }
         }
     </style>
 </head>
@@ -360,8 +377,8 @@
                 <div><a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI Assistant</span></a></div>
             </div>
             <div style="display: flex; flex-direction: column; justify-content: flex-end; height: 100%;">
-                <button id="logout-btn" style="background: none; border: 1px solid #E0E0E0; border-radius: 8px; padding: 10px; cursor: pointer; color: #454652; font-size: 13px; font-weight: 600; margin-bottom: 10px; width: 100%;">Sign Out</button>
-                <div style="color: white; border-radius: 8px; background-color: #1A237E; padding: 10px; height: 70px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+                <button id="logout-btn" style="background: none; border: 1px solid #939393; border-radius: 8px; padding: 10px; cursor: pointer; color: #454652; font-size: 13px; font-weight: 600; margin-bottom: 10px; width: 100%;">Sign Out</button>
+                <div class="current-balance" style="color: white; border-radius: 8px; background-color: #1A237E; padding: 10px; height: 70px; display: flex; align-items: center; flex-direction: column; justify-content: center;">
                     <div style="font-size: 12px; line-height: 20px;">CURRENT BALANCE</div>
                     <div style="font-size: 23px;" id="sidebar-balance">0.00</div>
                 </div>
@@ -378,7 +395,6 @@
                 </div>
 
                 <div class="transaction-body">
-                    <!-- LEFT -->
                     <div class="transaction-left">
 
                         <div>

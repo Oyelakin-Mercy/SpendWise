@@ -292,9 +292,14 @@ nav {
     .main-history {
         padding-bottom: 80px;
     }
-     aside > div:last-child {
+    .current-balance {
         display: none !important;
     }
+
+    #logout-btn {
+        margin-bottom: 0 !important;
+    }
+    
     nav {
         display: none !important;
     }

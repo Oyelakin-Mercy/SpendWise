@@ -358,8 +358,12 @@
                 margin: 0 16px;
             }
 
-            aside > div:last-child {
+            .current-balance {
                 display: none !important;
+            }
+
+            #logout-btn {
+                margin-bottom: 0 !important;
             }
         }
     </style>
@@ -379,8 +383,8 @@
             <div><a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI Assistant</span></a></div>
         </div>
         <div style="display:flex;flex-direction:column;justify-content:flex-end;height:100%;">
-            <button id="logout-btn" style="background:none;border:1px solid #E0E0E0;border-radius:8px;padding:10px;cursor:pointer;color:#454652;font-size:13px;font-weight:600;margin-bottom:10px;width:100%;">Sign Out</button>
-            <div style="color:white;border-radius:8px;background-color:#1A237E;padding:10px;height:70px;display:flex;align-items:center;flex-direction:column;justify-content:center;">
+            <button id="logout-btn" style="background:none;border: 1px solid #939393;border-radius:8px;padding:10px;cursor:pointer;color:#454652;font-size:13px;font-weight:600;margin-bottom:10px;width:100%;">Sign Out</button>
+            <div class="current-balance" style="color:white;border-radius:8px;background-color:#1A237E;padding:10px;height:70px;display:flex;align-items:center;flex-direction:column;justify-content:center;">
                 <div style="font-size:12px;line-height:20px;">CURRENT BALANCE</div>
                 <div style="font-size:20px;" id="sidebar-balance">0.00</div>
             </div>
@@ -427,13 +431,6 @@
     </div>
 </div>
 
-<div class="mobile-bottom-nav">
-    <a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a>
-    <a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a>
-    <a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a>
-    <a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI</span></a>
-</div>
-
 <div class="modal-overlay" id="modal-overlay">
     <div class="modal">
         <h2>Set Category Budget</h2>
@@ -472,6 +469,12 @@
             <button class="modal-save" id="modal-save-btn">Save Budget</button>
         </div>
     </div>
+</div>
+<div class="mobile-bottom-nav">
+    <a href="/pages/dashboard.html"><img src="/images/dashboard-logo.png" alt=""><span>Dashboard</span></a>
+    <a href="/pages/history.html"><img src="/images/history-2.png" alt=""><span>History</span></a>
+    <a href="/pages/budget.html"><img src="/images/budget.png" alt=""><span>Budget</span></a>
+    <a href="/pages/ai-insights.html"><img src="/images/AI.png" alt=""><span>AI</span></a>
 </div>
 
 <script type="module">
