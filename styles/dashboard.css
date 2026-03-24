@@ -1,0 +1,221 @@
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f6fa;
+}
+
+/* Layout */
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: #eeeeee;
+    color: #000767;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    margin-bottom: 30px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.sidebar li:hover {
+    background: white;
+}
+
+.sidebar li.active {
+    background: white;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Top Section */
+.top h1 {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.top h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0 25px;
+}
+
+/* Cards */
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    flex: 1;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    position:relative
+}
+
+.card p {
+    font-size: 12px;
+    color: gray;
+    margin-bottom: 5px;
+}
+
+.card h3 {
+    font-size: 20px;
+}
+
+.card:nth-child(1) {
+    border-left: 5px solid green;
+}
+
+.card:nth-child(2) {
+    border-left: 5px solid red;
+}
+
+/* Middle Section */
+.middle {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* Boxes */
+.box {
+    background: white;
+    padding: 20px;
+    flex: 1;
+    border-radius: 10px;
+}
+
+/* Fake Circle Progress */
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 10px solid #eee;
+    border-top: 10px solid green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Insight Box */
+.insight-box {
+    background: #1e3a8a;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+}
+
+.budget-bar {
+    margin-top: 15px;
+    background: #3b82f6;
+    padding: 8px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Bottom Section */
+.bottom {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.goal {
+    margin-bottom: 20px;
+}
+
+.goal p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.bar {
+    background: #ddd;
+    height: 8px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bar span {
+    display: block;
+    height: 100%;
+    background: green;
+}
+
+/* Transactions */
+.recent-transactions {
+    flex: 1;
+}
+
+.transaction-detail {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    transition: 0.2s;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+
+    .cards {
+        flex-direction: column;
+    }
+
+    .middle {
+        flex-direction: column;
+    }
+
+    .bottom {
+        flex-direction: column;
+    }
+}
