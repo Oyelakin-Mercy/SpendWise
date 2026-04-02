@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpendWise Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <span class="material-symbols-rounded">account_balance_wallet</span>
+          </div>
+          <span class="logo-text">SpendWise</span>
+        </a>
+
+        <nav>
+          <a href="#" class="active">
+            <span class="material-symbols-rounded">grid_view</span>
+            Dashboard
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">receipt_long</span>
+            History
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">account_balance</span>
+            Budget
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">trending_up</span>
+            Savings
+          </a>
+          <a href="#">
+            <span class="material-symbols-rounded">psychology</span>
+            AI Insight
+          </a>
+        </nav>
+
+        <div class="user">
+          <div class="avatar">AK</div>
+          <div>
+            <p>Adebayo K.</p>
+            <p>Premium Plan</p>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <header class="mobile-header">
+          <a href="#" class="mobile-logo">
+            <div class="logo-icon">
+              <span class="material-symbols-rounded">account_balance_wallet</span>
+            </div>
+            <span class="logo-text">SpendWise</span>
+          </a>
+          <button class="btn btn-ghost" style="padding: 8px">
+            <span class="material-symbols-rounded">notifications</span>
+          </button>
+        </header>
+
+        <div class="page-top">
+          <div>
+            <h2>Good morning, Adebayo 👋</h2>
+            <p>Here's your financial overview for March 2025.</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost">
+              <span class="material-symbols-rounded">tune</span>
+              Filter
+            </button>
+            <button class="btn btn-primary">
+              <span class="material-symbols-rounded">add</span>
+              Add Transaction
+            </button>
+          </div>
+        </div>
+
+        <div class="balance">
+          <div>
+            <label>Total Balance</label>
+            <div class="amount">₦142,500</div>
+          </div>
+
+          <div class="stat">
+            <label>Income</label>
+            <div class="value">₦210,000</div>
+            <div class="note up">↑ 12% vs last month</div>
+          </div>
+
+          <div class="stat">
+            <label>Expenses</label>
+            <div class="value">₦67,500</div>
+            <div class="note down">42% of budget used</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom: 20px">
+          <div class="card">
+            <div class="card-top">
+              <h3>Spending Breakdown</h3>
+              <button class="link">Details</button>
+            </div>
+
+            <div class="donut-layout">
+              <div class="donut-wrap">
+                <svg viewBox="0 0 120 120" width="120" height="120">
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#eeeeee" stroke-width="14" />
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#1a1a6e" stroke-width="14" stroke-dasharray="301.6" stroke-dashoffset="144.8" />
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#1b6b24" stroke-width="14" stroke-dasharray="301.6" stroke-dashoffset="220.2" stroke-linecap="butt" />
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#c8a84b" stroke-width="14" stroke-dasharray="301.6" stroke-dashoffset="265.4" stroke-linecap="butt" />
+                </svg>
+                <div class="donut-label">74%<br /><span>Essential</span></div>
+              </div>
+
+              <div class="legend">
+                <div class="legend-item">
+                  <div class="left">
+                    <div class="dot" style="background: var(--brand)"></div>
+                    <p>Housing & Bills</p>
+                  </div>
+                  <strong>₦35,000</strong>
+                </div>
+                <div class="legend-item">
+                  <div class="left">
+                    <div class="dot" style="background: var(--green)"></div>
+                    <p>Groceries</p>
+                  </div>
+                  <strong>₦18,200</strong>
+                </div>
+                <div class="legend-item">
+                  <div class="left">
+                    <div class="dot" style="background: var(--gold)"></div>
+                    <p>Transport</p>
+                  </div>
+                  <strong>₦8,300</strong>
+                </div>
+                <div class="legend-item">
+                  <div class="left">
+                    <div class="dot" style="background: var(--border)"></div>
+                    <p>Other</p>
+                  </div>
+                  <strong>₦6,000</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight">
+            <div class="top">
+              <span class="material-symbols-rounded" style="font-size: 18px; opacity: 0.8">psychology</span>
+              <span class="badge">AI Insight</span>
+            </div>
+
+            <blockquote>
+              You're on track to save <strong>₦15,000 more</strong> than last month.
+              Consider moving your surplus to your Education Fund — you're only 55% away from the target.
+            </blockquote>
+
+            <div class="health">
+              <div class="row">
+                <span>Budget Health</span>
+                <span>Excellent</span>
+              </div>
+              <div class="track">
+                <div class="fill" style="width: 85%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-top">
+              <h3>Savings Goals</h3>
+              <button class="link">View all</button>
+            </div>
+
+            <div class="goals">
+              <div class="goal">
+                <div class="row">
+                  <p>Education Fund</p>
+                  <span>₦45k / ₦100k</span>
+                </div>
+                <div class="goal-track">
+                  <div class="goal-fill" style="width: 45%"></div>
+                </div>
+              </div>
+
+              <div class="goal">
+                <div class="row">
+                  <p>New Business Tool</p>
+                  <span>₦12.5k / ₦20k</span>
+                </div>
+                <div class="goal-track">
+                  <div class="goal-fill" style="width: 62.5%"></div>
+                </div>
+              </div>
+
+              <div class="goal">
+                <div class="row">
+                  <p>Emergency Fund</p>
+                  <span>₦85k / ₦250k</span>
+                </div>
+                <div class="goal-track">
+                  <div class="goal-fill" style="width: 34%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-top">
+              <h3>Recent Transactions</h3>
+              <button class="link">See all</button>
+            </div>
+
+            <div class="tx-list">
+              <div class="tx">
+                <div class="left">
+                  <div class="tx-icon expense">
+                    <span class="material-symbols-rounded">shopping_cart</span>
+                  </div>
+                  <div class="tx-info">
+                    <p>Oando Supermarket</p>
+                    <small>Grocery · 2 hours ago</small>
+                  </div>
+                </div>
+                <span class="amount debit">−₦4,200</span>
+              </div>
+
+              <div class="tx">
+                <div class="left">
+                  <div class="tx-icon income">
+                    <span class="material-symbols-rounded">payments</span>
+                  </div>
+                  <div class="tx-info">
+                    <p>Salary Credit</p>
+                    <small>Work · Yesterday</small>
+                  </div>
+                </div>
+                <span class="amount credit">+₦105,000</span>
+              </div>
+
+              <div class="tx">
+                <div class="left">
+                  <div class="tx-icon expense">
+                    <span class="material-symbols-rounded">directions_car</span>
+                  </div>
+                  <div class="tx-info">
+                    <p>Bolt Ride</p>
+                    <small>Transport · 2 days ago</small>
+                  </div>
+                </div>
+                <span class="amount debit">−₦2,100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <nav class="mobile-nav">
+      <a href="#" class="active">
+        <span class="material-symbols-rounded">grid_view</span>
+        Dashboard
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">receipt_long</span>
+        History
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">account_balance</span>
+        Budget
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">trending_up</span>
+        Savings
+      </a>
+      <a href="#">
+        <span class="material-symbols-rounded">psychology</span>
+        AI
+      </a>
+    </nav>
+
+    <button class="fab" aria-label="Add transaction">
+      <span class="material-symbols-rounded">add</span>
+    </button>
+  </body>
+</html>
